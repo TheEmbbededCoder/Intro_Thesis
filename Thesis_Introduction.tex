@@ -11,18 +11,46 @@
 \chapter{Introduction}
 \label{chapter:introduction}
 
-Insert your chapter material here...
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Motivation}
 \label{section:motivation}
 
-Relevance of the subject...
-With the advent of Big Data, where a massive amount of data is constantly being collected, a need for incremental increases in the processing power of data centers arises. The term \textit{High-Performance Computing} or HPC refers to the practice of aggregating computing power in a way that delivers much higher performance than one could get out of a typical desktop computer or workstation to solve large problems in science, engineering, or business. [https://insidehpc.com/hpc-basic-training/what-is-hpc/] 
+With the advent of \textit{Big Data}, where a massive amount of data is constantly being collected, a need for leap in the processing power of data centers arises. The term \textit{High-Performance Computing} or HPC refers to the practice of aggregating computing power in a way that delivers much higher performance than one could get out of a typical desktop computer or workstation to solve large problems in science, engineering, or business. [https://insidehpc.com/hpc-basic-training/what-is-hpc/] 
 
-Analyzing the current TOP500 [https://www.top500.org/lists/2019/06/highs/]  supercomputer list as of June 2019, for the first time, all 500 entries have, at least, 1 Petaflop of performance. This is greatly the case due to the use of custom accelerators and GPU in particular. As of the most recent list, 134 systems use accelerators and from those, 127 are equipped with GPUs. However, this massive amount of performance capabilities is tied to the exceptionally high power consumption of the GPUs deployed on this supercomputers, as a reference, the top performer \textit{Summit} supercomputer, with a peak performance of around 200 TFlops/s consumes 10096 kW of power. [https://www.top500.org/lists/2019/06/] Adding to this powering cost, an additional 0.5 to 1W of power is consumed by the cooling system itself [C.D. Patel, C.E. Bash, R. Sharma, M. Beitelmal, and R. Friedrich. 2003. Smart cooling of data centers. Pacific RIM/ASME International Electronics Packaging Technical Conference and Exhibition (IPACK03) (2003).], which makes energy efficiency the most important factor in the creation of these supercomputers.
+Analyzing the current TOP500 [https://www.top500.org/lists/2019/06/highs/]  supercomputer list as of June 2019, for the first time, all 500 entries have, at least, 1 Petaflop of performance. This is greatly the case due to the use of custom accelerators and Graphical Processing Units (GPUs) in particular. Of the most recent list, 134 systems use accelerators and from those, 127 are equipped with GPUs. However, this massive amount of performance capabilities is tied to an exceptionally high power consumption of the CPUs (Central Processing Units) and mainly, the GPUs, deployed on these supercomputers [arranjar fonte para GPU > CPU]. As a reference, the top performer, the \textit{Summit} supercomputer with a peak performance of around 200 TFlops/s, consumes 10096 kW of power. [https://www.top500.org/lists/2019/06/] Adding to this powering cost, an additional 0.5 to 1W is consumed by the cooling system itself [C.D. Patel, C.E. Bash, R. Sharma, M. Beitelmal, and R. Friedrich. 2003. Smart cooling of data centers. Pacific RIM/ASME International Electronics Packaging Technical Conference and Exhibition (IPACK03) (2003).], which makes power consumption the most important factor in the creation of new and faster supercomputers.
+
+On a processor, the relation between power \textit{P} and the operating frequency \textit{F} and voltage \textit{V} is given by the formula [Jan M Rabaey, Anantha P Chandrakasan, and Borivoje Nikolic. 2002. Digital integrated circuits. Vol. 2. Prentice hall Englewood Cliﬀs]
+
+\begin{equation}
+    P \propto F * V^2
+\end{equation}
+
+Therefore, a small reduction in the supplied voltage applied to the processor results in a significant reduction of the total power consumption. 
+
+Manufacturers establish the minimum required supplied voltage for the processor, however, this value is very conservative to accommodate the discrepancies that occur in manufacturing. By reducing the default voltage level of the circuit, three phenomenons are observed. With a small reduction, the circuit continues to work as intended. If a further reduction is made, the critical path of the circuit stops being fulfilled, and errors on the computations start appearing. Eventually, with an even further reduction, the processor stops working completely. This occurs because, by reducing the supplied voltage, the transistors start working slower [a reference to slower transistors] and the timings constraints that the circuit builds upon are completely violated.
+
+Hence, if the computer is running Imprecision Tolerant (IT) applications, such as Artificial Neural Networks (ANN) [go to Efficient utilization of imprecise computational blocks for hardware implementation of imprecision tolerant applications], there is a possibility of operating the circuit outside of the normal operating point and achieve significant power savings while still producing acceptable results to the end-user.
+
+To verify this claim, a convolution neural network (a type of artificial neural network specialized for image processing) is trained to identify handwritten numbers of the MNIST data set. This neural network is trained on a computer with a powerful GPU, that mimics, on a small scale, the computers used on the supercomputers before mentioned. It is verified that it is possible to under-voltage the GPU core 170mV from the standard 1150mV without any degradation of both the performance of the GPU (required time to train the model) and the achieved accuracy at the end of the training. However, this reduction on the supplied voltage led to a reduction of 40.48\% of the maximum power, a  28.81\% reduction on the average power and a 26.92\% reduction of the required energy to train the model.
+
+This result shows that there is space to be explored on the creation of a control mechanism for the frequency and voltage of a GPU core that is aware of the nature of the application being run and the results that are being produced by it to dramatically reduce the power consumption of this systems.
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Objectives}
 \label{section:objectives}
 
-Explicitly state the objectives set to be achieved with this thesis...
+The main objective of this dissertation is to design a dynamic controller the voltage and frequency of the GPU core that places those parameters outside of the default working point with the objective of reducing the power consumption without degradation of the results produced by the system. This controller needs to be aware to the nature of the application being run and the results that it is producing, not only 
+
+O grande objectivo da tese é projectar um controlador dinâmico de tensão em frequência que seja sensível ao tipo de aplicação que o GPU esta a correr com o objectivo de reduzir o consumo energetico e sem impacto no resultado final da computação
+
+Para isso vai-se:
+
+Analisar o comportamento da arquitetura da GPU à mudança de DVFS
+
+Entender o comportamento da aprendisagem de modelos de machine learning - redes neuronais em particular - aquando da variação do ponto de funcionamento da GPU
+
+Arranjar uma metodologia de analise da qualidade do output da aplicação e do estado do GPU
+
+De modo a desenhar um controlador de tensao e frequencia realimentado 
+
