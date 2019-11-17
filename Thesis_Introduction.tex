@@ -16,9 +16,9 @@
 \section{Motivation}
 \label{section:motivation}
 
-With the advent of \textit{Big Data}, where a massive amount of data is constantly being collected, a need for leap in the processing power of data centers arises. The term \textit{High-Performance Computing} or HPC refers to the practice of aggregating computing power in a way that delivers much higher performance than one could get out of a typical desktop computer or workstation to solve large problems in science, engineering, or business. [https://insidehpc.com/hpc-basic-training/what-is-hpc/] 
+With the advent of \textit{Big Data}, where a massive amount of data is constantly being collected, a need for leap in the processing power of data centers arises. The term High-Performance Computing (HPC) refers to the practice of aggregating computing power in a way that delivers much higher performance than one could obtain of a typical desktop computer or workstation to solve large problems in science, engineering, or business. [https://insidehpc.com/hpc-basic-training/what-is-hpc/] REFORMULAR
 
-Analyzing the current TOP500 [https://www.top500.org/lists/2019/06/highs/]  supercomputer list as of June 2019, for the first time, all 500 entries have, at least, 1 Petaflop of performance. This is greatly the case due to the use of custom accelerators and Graphical Processing Units (GPUs) in particular. Of the most recent list, 134 systems use accelerators and from those, 127 are equipped with GPUs. However, this massive amount of performance capabilities is tied to an exceptionally high power consumption of the CPUs (Central Processing Units) and mainly, the GPUs, deployed on these supercomputers [arranjar fonte para GPU > CPU]. As a reference, the top performer, the \textit{Summit} supercomputer with a peak performance of around 200 TFlops/s, consumes 10096 kW of power. [https://www.top500.org/lists/2019/06/] Adding to this powering cost, an additional 0.5 to 1W is consumed by the cooling system itself [C.D. Patel, C.E. Bash, R. Sharma, M. Beitelmal, and R. Friedrich. 2003. Smart cooling of data centers. Pacific RIM/ASME International Electronics Packaging Technical Conference and Exhibition (IPACK03) (2003).], which makes power consumption the most important factor in the creation of new and faster supercomputers.
+Analyzing the current TOP500 [https://www.top500.org/lists/2019/06/highs/]  supercomputer list as of June 2019, for the first time, all 500 entries have at least 1 Petaflop of performance. This is mainly due to the use of custom accelerators and Graphical Processing Units (GPUs) in particular. Of the most recent list, 134 systems use accelerators and from those, 127 are equipped with GPUs. However, this massive amount of performance capabilities is tied to an exceptionally high power consumption of the processors deployed on these supercomputers [arranjar fonte]. For instance, the top performer, the \textit{Summit} supercomputer with a peak performance of around 200 TFlops/s, consumes 10096 kW of power. [https://www.top500.org/lists/2019/06/] In addition to this powering cost, an additional 0.5W to 1W is consumed by the cooling system itself [C.D. Patel, C.E. Bash, R. Sharma, M. Beitelmal, and R. Friedrich. 2003. Smart cooling of data centers. Pacific RIM/ASME International Electronics Packaging Technical Conference and Exhibition (IPACK03) (2003).], which makes power consumption the most important factor in the creation of new and faster supercomputers.
 
 On a processor, the relation between power \textit{P} and the operating frequency \textit{F} and voltage \textit{V} is given by the formula [Jan M Rabaey, Anantha P Chandrakasan, and Borivoje Nikolic. 2002. Digital integrated circuits. Vol. 2. Prentice hall Englewood Cliﬀs]
 
@@ -40,17 +40,5 @@ This result shows that there is space to be explored on the creation of a contro
 \section{Objectives}
 \label{section:objectives}
 
-The main objective of this dissertation is to design a dynamic controller the voltage and frequency of the GPU core that places those parameters outside of the default working point with the objective of reducing the power consumption without degradation of the results produced by the system. This controller needs to be aware to the nature of the application being run and the results that it is producing, not only 
-
-O grande objectivo da tese é projectar um controlador dinâmico de tensão em frequência que seja sensível ao tipo de aplicação que o GPU esta a correr com o objectivo de reduzir o consumo energetico e sem impacto no resultado final da computação
-
-Para isso vai-se:
-
-Analisar o comportamento da arquitetura da GPU à mudança de DVFS
-
-Entender o comportamento da aprendisagem de modelos de machine learning - redes neuronais em particular - aquando da variação do ponto de funcionamento da GPU
-
-Arranjar uma metodologia de analise da qualidade do output da aplicação e do estado do GPU
-
-De modo a desenhar um controlador de tensao e frequencia realimentado 
+The main objective of this dissertation is to design a dynamic controller the voltage and frequency of the GPU core that places those parameters outside of the default working point to reduce the power consumption without degradation of the results produced by the system. This controller needs to be aware of the nature of the application being run and the results that it is producing, not only the extrinsic parameters of the GPU like total power consumption and temperature.
 

@@ -11,11 +11,15 @@
 \chapter{Proposal}
 \label{chapter:implementation}
 
-Insert your chapter material here...
+
+\begin{figure}[!htb]
+  \centering
+  \includegraphics[width=0.75\textwidth]{Figures/Proposel/Controller_Diagram.png}
+  \caption[Controller]{DVFS Aware Controller Block Diagram.}
+  \label{fig:controlerDVFSaware}
+\end{figure}
 
 
-
-\section{Experimental Methodology}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{GPU DVFS Aware Mechanism}
@@ -31,3 +35,15 @@ Insert your chapter material here...
 
 \subsection{Neural Networks}
 \label{section:solarch}
+
+\section{Experimental Methodology}
+
+To design the controller, it is necessary to first identify a set of artificial neural network models that are imprecision tolerant. Then, acquire meaningful metrics about the state of the GPU core and the quality of the output that the neural networks are producing. The second step is to study the relation between 
+
+Analisar o comportamento da arquitetura da GPU à mudança de DVFS
+
+Entender o comportamento da aprendisagem de modelos de machine learning - redes neuronais em particular - aquando da variação do ponto de funcionamento da GPU
+
+Arranjar uma metodologia de analise da qualidade do output da aplicação e do estado do GPU
+
+De modo a desenhar um controlador de tensao e frequencia realimentado 
