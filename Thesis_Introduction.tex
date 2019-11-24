@@ -11,7 +11,7 @@
 \chapter{Introduction}
 \label{chapter:introduction}
 
-With the advent of Big Data, a massive amount of information is constantly being collected and analyzed to extract value out of it. The way to obtain the value is through the use of machine learning algorithms, capable of analyzing huge data sets and uncover relations and extract meaning out of the raw information. These algorithms are being run in all kinds of devices, from supercomputers to our smartphones and a tonic exists across all kinds of modern devices, they are Heterogeneous Computing Systems composed of traditional Central Processing Units (CPUs) and Graphical Processing Units (GPUs). The use of GPUs, with their highly parallel architecture, is bringing significant gains in the performance to the systems and the possibility of increased capabilities of the algorithms being run. 
+With the advent of Big Data, a massive amount of information is constantly being collected and analyzed to extract value out of it. The way to obtain the value is through the use of machine learning (ML) algorithms, capable of analyzing huge data sets and uncover relations and extract meaning out of the raw information. These algorithms are being run in all kinds of devices, from supercomputers to our smartphones and a tonic exists across all kinds of modern devices, they are Heterogeneous Computing Systems composed of traditional Central Processing Units (CPUs) and Graphical Processing Units (GPUs). The use of GPUs, with their highly parallel architecture, is bringing significant gains in the performance to the systems and the possibility of increased capabilities of the algorithms being run. 
 
 The addition of this new processing device to the computers also brought the drawback added power consumption. However, unlike CPUs, where it is already common to see advance power techniques that control the frequency and voltage applied to the processor accordingly to the workload, on GPUs the dynamic scaling  of its frequency and voltage (Dynamic voltage and frequency scaling - DVFS) is still mostly relying on external factors such as the temperature of the die and the power that the system is requiring to the power supply. The use of GPUs in such different types of applications, from video games and rendering to scientific simulations and machine learning applications, makes it hard for manufacturers to optimize the DVFS parameters to couple with the different workloads.
 
@@ -26,10 +26,13 @@ This result shows that there is space to be explored outside of the conventional
 \section{Main Objectives}
 \label{section:objectives}
 
+The objective of this dissertation is to create a new DVFS mechanism that is aware of the nature of the application being run and the results that are being produced by it, to reduce the total power consumption of the GPU. With this new mechanism, it will be possible to enlarge the voltage and frequency margins, working outside of the conventional DVFS limits in current hardware. 
 
+With this objective, it is first necessary to test different classes of machine learning algorithms, to find their imprecision tolerance and what are the impacts of running them with not default DFVS parameters. Parallel to it, a way of acquiring meaningful performance counters in runtime about the running application has to be found. With these two modules, it will be possible to validate how big is the impact of running applications in such a manner and understand how does the performance metrics relate to the voltage and frequency. The acquired relations will be used to create a model that tries to minimize energy consumption by controlling the voltage and frequency of the GPU. The last step of the presented work is to test the new DVFS aware model and understand the degree of improvement achieved. Figure \ref{thesisObj} graphically shows the temporal relation between the different objectives to be performed during the dissertation.
 
-
-This result shows that there is space to be explored on the creation of a control mechanism for the frequency and voltage of a GPU core that is aware of the nature of the application being run and the results that are being produced by it to dramatically reduce the power consumption of this systems.
-
-The main objective of this dissertation is to design a dynamic controller the voltage and frequency of the GPU core that places those parameters outside of the default working point to reduce the power consumption without degradation of the results produced by the system. This controller needs to be aware of the nature of the application being run and the results that it is producing, not only the extrinsic parameters of the GPU like total power consumption and temperature.
-
+\begin{figure}[!htb]
+  \centering
+  \includegraphics[width=1\textwidth]{Figures/Introduction/Dissertation_Objectives.png}
+  \caption[]{Flowchart of dissertation objectives.}
+  \label{fig:thesisObj}
+\end{figure}

@@ -12,30 +12,67 @@
 \label{chapter:stateoftheart}
 
 
-
-
-High-Performance Computing - HPC
-
-O tipo de workload a ser executado no computador vai fazer 
+To reflect the current use cases of GPUs and the efforts made in the pursuit of improving the performance and minimizing the energy consumption of them, this chapter provides an overview of the architecture of modern GPUs, with a brief specialization on the AMD GNC architecture. It also presents what kinds of power savings techniques are currently being employed in the existent hardware in the market and a review of the literature related to this subject. Furthermore, an overview of power and performance models is provided, highlighting how does the performance and power requirements are affected by the workload 
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{General Purpose Computing on GPUs}
 \label{section:gpuarch}
 
-A GPU is a highly parallel programmable processor, that is built to perform the same instruction on a set of data, belonging to the category of processors of \textit{Single Instruction Multiple Data} - SIMD or SIMT? . GPUs were first developed with the processing of computer graphics and images in mind, being able to compute all the pixels that compose an image, simultaneously. 
+A GPU is a highly parallel programmable processor, that is built to perform the same instruction on a set of data, belonging to the category of processors of \textit{Single Instruction Multiple Threads} - SIMT. When referring to GPUs, it is still common to be talking about their graphics capabilities, however, more and more programs are taking advantage of their highly parallel architecture to accelerate applications. The use of GPUs in general programming commonly referred to as GPGPU - General Purpose Graphical Processing Unit was first led by the development of CUDA by NVIDIA and OpenCL by Khronos Group. CUDA and OpenCL are both parallel computing platforms and application programming interface (API) that allows developers to create GPU-accelerated applications, where the computation can be divided between the CPU and GPU. However, the first versions of these frameworks treated the GPU as a slave device, providing a set of directives that allow the CPU (master device) to transfer data, synchronize and control the GPU.  Though, to take full advantage of the GPU architecture and create a true heterogeneous system, the CPU and GPU collaborate more efficiently. This lead, in 2012, the HSA Foundation to propose the Heterogeneous System Architecture HSA [W. H. Wen-mei, Heterogeneous System Architecture: A new compute platform infrastructure. Morgan Kaufmann, 2015.] framework that acts as an intermediary low-level API to provide improved coordination and communication for heterogeneous computing systems.  More recently, AMD introduced the Radeon Open Computing platform (ROC) [(2019) ROCm, a New Era in Open GPU Computing. [Online]. Available: https://rocm.github.io/]. ROC, like CUDA and OpenCL, provides a set of tools that allow developers to create heterogeneous applications. The added benefits of ROC are that it is built on top of the HSA runtime API and that exposes the framework in a wider set of programming frameworks like OpenCL, HC++, and HIP.
 
-With the increase in performance of these devices and the appearance of new types of computation workloads, such as computer simulations, machine learning, and data analysis applications that could benefit from the parallel nature of GPUs, these started to be used in general-purpose computing, coining the term GPGPU - General-Purpose Graphical Processing Unit.
+The development of improved frameworks and programming methodologies are making GPUs the prime tool to accelerate big-data applications and deep learning algorithms. GPUs can outperform CPUs in both throughput and energy efficiency. In this section, it will be provided a general overview of the GPU architecture, followed by an exploration of architectural techniques that are being employed to reduce power consumption and increase the efficiency of these devices.
+
 
 \subsection{General Overview of GPU Architecture}
 
-The architecture of the GPU can be roughly divided into the Streaming Multiprocessors and on the Memory.  
-\subsubsection{Streaming Multiprocessor}
-\subsubsection{Memory }
+The architecture of the GPU can be roughly divided into computation and memory components. The computation part is composed of the vertex shader, the rendering engine, and the RISC processors. The vertex shader and rendering engine are inserted on the graphics pipeline and are not generally used on GPGPU applications. The RISC processors are responsible for the GPU programmable calculations, and depending on the manufacturer, can be called streaming multiprocessors (SMs) in NVIDIA GPUs [ NVIDIA. CUDA C Programming Guide. http: //docs.nvidia.com/cuda/cuda-c-programming-guide/.] or computing units (CU) in AMD GPUs [ AMD. AMD Accelerated Parallel Processing: OpenCL Programming Guide. http://developer.amd.com/wordpress/media/2013/07/ AMD Accelerated Parallel Processing OpenCL Programming Guide-rev-2.7.pdf.]. To support thousands of concurrent threads simultaneously, each CU is made up of hundreds of execution units. Every CU has a statically allocated register file, where each thread can reserve a physical part of it [ N. Jing, Y. Shen, Y. Lu, S. Ganapathy, Z. Mao, M. Guo, R. Canal, and X. Liang. An energy-eﬃcient and scalable edram-based register ﬁle architecture for gpgpu. In Proceedings of the 40th Annual International Symposium on Computer Architecture, ISCA ’13, pages 344–355, New York, NY, USA, 2013. ACM.]. To enable concurrent execution of multiple threads in a single CU and allow low-overhead context switch, modern GPUs provide a large register file, where the context of all active threads can be stored. For reference, in the AMD GNC architecture, each CU has ‭49,152‬ (32-bit) registers.
 
-Falar que devido a ser a placa da AMD que vou falar sobre a arquitetura da AMD
+In terms of memory, both the AMD and the NVIDIA GPU present a 3 level hierarchy system: a global memory, accessible by all processors units (generally referred as video memory); a shared memory associated with each SM or CU, accessible by the processing units of that SM or CU; and a set of read-only caches for constants and textures.
 
-\subsection{AMD GNC Architecture}
+A GPU from AMD will be used to conduct the experimental part of this dissertation. For that reason, a more in-depth analysis of the architecture and framework from this manufacturer will be provided and the terminology used by it will be adopted. However, the presented work is independent of the hardware and terminology itself.
+
+\subsection{AMD Graphics Core Next}
+
+The AMD Graphics Core Next (GCN) [Vega whitepaper - https://www.techpowerup.com/gpu-specs/docs/amd-vega-architecture.pdf] architecture includes both the GPU microarchitecture as well as the instruction set of the processor unit. It was first released in 2012 and it is already in its fifth iteration with the codename Vega. The Vega microarchitecture is based on a multiprocessor chip with an array of 64 RISC SIMT processors called Compute Engine (CE). Respectively, each CE is constituted by 64 Next Compute Units (NCU), performing a total of 4096 stream processors. also called Compute Units. The interface between the GPU and the Host is done throw the Peripheral Compute Interconnect Express (PCIe). Figure \ref{Vega10arch} represents the logical organization of a Vega GPU. 
+
+\begin{figure}[!htb]
+  \begin{subfigmatrix}{2}
+    \subfigure[Chip block diagram, example with 4 CEs]{\includegraphics[height=0.8\linewidth]{Figures/StateArt/Vega10_microarchitecture.png}}
+    \subfigure[NCU]{\includegraphics[width=0.19\linewidth]{Figures/StateArt/NCU.png}}
+  \end{subfigmatrix}
+  \caption{Some aircrafts.}
+  \label{fig:Vega10arch}
+\end{figure}
+
+In the fifth iteration of the GNC microarchitecture, AMD introduced a new memory hierarchy and support for High-Band Memory 2 (HBM2). In a conventional memory arrangement, the registers of each processing element pull data from a set of L1 caches, that, in turn, access the global L2 cache. Finally, the L2 cache system provides access to the GPU's video memory. This arrangement implies that the video memory has the entire working set of data and resources, in order to provide high-bandwidth and low-latency access to data. However, in complex graphical scenes or while working GPGPU applications with large datasets, the total video memory may not be big enough to store all the data. In the Vega microarchitecture, by utilizing a  High-Bandwidth Cache Controller (HBCC), AMD made possible to utilize the local video memory like a last-level cache. In this arrangement, when a missing piece of data is not currently stored in the local memory, the GPU can pull from the host, just the necessary page memory. In this setup, instead of the GPU stalling, while the entire missing resource is copied from the host throw the PCIe bus, it just needs to wait for the smaller page memory to be transferred, resulting in significantly decreased memory access times. The GPGPU applications take great advantage of this memory hierarchy since it enables the use of bigger datasets than the ones that could fit in video memory.
+
+In the development of the work of this dissertation, a Radeon Vega Frontier Edition GPU is used. Table \ref{tab:gpusepcs} summarizes the most important specifications of the architecture of this device.
+
+\begin{table}[!htb]
+    \renewcommand{\arraystretch}{1.2} % more space between rows
+    \centering
+        \begin{tabular}{lc}
+            \multicolumn{1}{c}{\textbf{}} & \multicolumn{1}{l}{\textbf{Radeon™ Vega Frontier Edition}} \\ \hline
+            Base Architecture             & Vega GNC                                                   \\
+            \#Compute Units               & 64                                                         \\
+            \#Stream Processors           & 4096                                                       \\
+            GPU Memory Size               & 16 GB                                                      \\
+            Thermal Design Power          & 300 W                                                      \\ \hline
+        \end{tabular}
+    \caption{Characteristics of the used GPU device}
+    \label{tab:gpusepcs}
+\end{table}
+
+\subsection{Radeon Open Compute platform}
+
+The Radeon Open Compute (ROC) platform provides support for a set of frameworks and tools to allow developers to program and control the AMD GPUs.  In the following subsections, the SYSFS Interface [https://rocm-documentation.readthedocs.io/en/latest/ROCm_System_Managment/ROCm-System-Managment.html#sysfs-interface] and ROCProfiler [https://github.com/ROCm-Developer-Tools/rocprofiler] tools, used on the development of this work, are described.
+
+\subsubsection{SYSFS Interface}
+
+The ROCm System Management Interface (ROC-SMI) [https://github.com/RadeonOpenCompute/ROC-smi] is an user-friendly
+\subsubsection{ROCProfiler}
+
 
 Falar do ROCm-smi para mudar a frequencia e tensao da GPU core
 

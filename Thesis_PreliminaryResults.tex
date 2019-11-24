@@ -32,20 +32,7 @@ The developed CNN classifies the MNIST dataset [link to mnist], a set of 60000 t
 The CNN was trained using the Radeon Vega Frontier Edition GPU, a top of the line graphics processor accelerator from AMD. This graphics card presents 8 levels of pairs of GPU Core frequency and voltage, Table \ref{tab:gpulevels}, that the GPU chooses in runtime accordingly to the temperature and power required, trying to maximize the performance. The GPU allows for the user definition of the frequency and voltage throw the ROCm System Management Interface - \textit{rocm-smi}. With it, a script was developed that performs undervoltage in steps of 10 mV on each of the 8 default voltage and frequency pairs. If the undervoltage is accepted by the software, the MNIST model is trained and after each run, the achieved accuracy is stored alongside the maximum power and average consumption, total energy consumed and the time that it took to execute the train.
 
 
-\begin{table}[!htb]
-    \renewcommand{\arraystretch}{1.2} % more space between rows
-    \centering
-        \begin{tabular}{lc}
-            \multicolumn{1}{c}{\textbf{}} & \multicolumn{1}{l}{\textbf{Radeon™ Vega Frontier Edition}} \\ \hline
-            Base Architecture             & Vega GNC                                                   \\
-            \#Compute Units               & 64                                                         \\
-            \#Stream Processors           & 4096                                                       \\
-            GPU Memory Size               & 16 GB                                                      \\
-            Thermal Design Power          & 300 W                                                      \\ \hline
-        \end{tabular}
-    \caption{Characteristics of the used GPU device}
-    \label{tab:gpusepcs}
-\end{table}
+
 
 
 \begin{table}[!htb]
