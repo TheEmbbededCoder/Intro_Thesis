@@ -38,8 +38,8 @@ The AMD Graphics Core Next (GCN) [Vega whitepaper - https://www.techpowerup.com/
 
 \begin{figure}[!htb]
   \begin{subfigmatrix}{2}
-    \subfigure[Chip block diagram, example with 4 CEs]{\includegraphics[height=0.8\linewidth]{Figures/StateArt/Vega10_microarchitecture.png}}
-    \subfigure[NCU]{\includegraphics[width=0.19\linewidth]{Figures/StateArt/NCU.png}}
+    \subfigure[Chip block diagram, example with 4 CEs]{\includegraphics[width=0.7\linewidth]{Figures/StateArt/Vega10_microarchitecture.png}}
+    \subfigure[NCU]{\includegraphics[width=0.29\linewidth]{Figures/StateArt/NCU.png}}
   \end{subfigmatrix}
   \caption{Some aircrafts.}
   \label{fig:Vega10arch}
@@ -66,36 +66,82 @@ In the development of the work of this dissertation, a Radeon Vega Frontier Edit
 
 \subsection{Radeon Open Compute platform}
 
-The Radeon Open Compute (ROC) platform provides support for a set of frameworks and tools to allow developers to program and control the AMD GPUs.  In the following subsections, the SYSFS Interface [https://rocm-documentation.readthedocs.io/en/latest/ROCm_System_Managment/ROCm-System-Managment.html#sysfs-interface] and ROCProfiler [https://github.com/ROCm-Developer-Tools/rocprofiler] tools, used on the development of this work, are described.
+The Radeon Open Compute (ROC) platform provides support for a set of frameworks and tools to allow developers to program and control the AMD GPUs.  In the following subsections, the ROCM-SMI [https://github.com/RadeonOpenCompute/ROC-smi] and ROC-Profiler [https://github.com/ROCm-Developer-Tools/rocprofiler] tools, used on the development of this work, are described.
 
-\subsubsection{SYSFS Interface}
+\subsubsection{ROCM-SMI}
+The ROCm System Management Interface (ROC-SMI) [https://github.com/RadeonOpenCompute/ROC-smi] is a user-friendly command-line application for manipulating the Radeon Open Compute Kernel (ROCK). The application uses sysfs files to query and manipulate the device kernel using the libsensors library [https://linux.die.net/man/3/libsensors]. Using it, it is possible to know and control the state of the GPU device.
 
-The ROCm System Management Interface (ROC-SMI) [https://github.com/RadeonOpenCompute/ROC-smi] is an user-friendly
-\subsubsection{ROCProfiler}
+From the set of query and control directives enabled by ROC-SMI, the following are of particular interest for the topic of this dissertation:
+
+\begin{itemize}
+\item \textbf{GPU utilization:} Retrieves the current utilization rates for the device's major subsystems, one value for the processing core and other for the main device memory. These values are computed over a specific time interval that is directly set on the libsensors library. The processing core utilization reflects the percentage of time that the GPU core was being utilized to perform computations whereas the main device memory utilization reflects the times on which the memory was being read or written.
+
+\item \textbf{GPU power}: Retrieves the average power being used by the device. Similarly to the utilization rate, the average power computed over the same time interval, during which, a defined number of power samples are taken.
+
+\item \textbf{Clock rate and voltage level:} Retrieves both the currently applied clock frequency and voltage level to the GPU core and the main device memory. It also displays two tables, the first, showing the 8 pairs of clock frequency and voltage level of the GPU core and the second, showing 4 pairs of the same parameters related to the device memory. These two tables, correspondent to the 8 and 4 performance levels that the device kernel can apply to the GPU core and memory correspondingly.
+\end{itemize}
+
+The ROC-SMI interface also allows querying the device temperature, the current fan speed, and the selected performance level.
+
+ROC-SMI, also provides a mechanism to control and change device parameters such as:
+\begin{itemize}
+\item \textbf{Set clock rate and voltage level:} Set the clock frequency and the voltage level of any of the performance levels of both the GPU core and memory. 
+\item \textbf{Set performance level:} Allows the user to select the desired performance level of the GPU core and device memory, disabling the driver automatic performance level management system.
+\item \textbf{Reset clock rate and voltage level:} Resets the clock rates and voltage level to the default values.
+\end{itemize}
+
+Additionally, the interface allows the user to manually set the fan speed, important to manually guarantee that all the executed tests are performed at the same temperature level.
+
+The versatility and total and independent control of the clock rate and voltage level of the device allowed by ROCM-SMI and the libsensors library was the defining factor for choosing an AMD GPU over the more popular options of NVIDIA. In the development of the work presented in this dissertation, an exploration of the voltage level is undertaken, and only the AMD platform allows for independent control over this variable.
+
+\subsubsection{ROC-Profiler}
+
+The Radeon Open Compute Profiler [https://github.com/ROCm-Developer-Tools/rocprofiler] is a profiling and tracing library for applications developed using any of the programming frameworks available on the ROC platform (OpenCL, HC++, HIP [Evaluating Performance Tradeoffs on the Radeon Open Compute Platform]). The library gives access to the performance counters of AMD GPUs, allowing developers to configure the start, stop, read and reset of the physical registers on the microarchitecture that count the number of events (number of instructions per type, cache hits/miss, etc) that the device is performing.
+
+The instrumentation of applications with the API calls to rocprofiler allows for close monitoring of the operations being performed and can give important insights about the relation that the running code as with the results being achieved on the frequency and voltage exploration.
 
 
-Falar do ROCm-smi para mudar a frequencia e tensao da GPU core
-
-Falar dos performance counters
-
-Falar como follow up da AMD RDNA Architecture
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Power Savings Techniques}
-\label{section:overview}
 
-\subsection{Architectural techniques for saving energy}
-Fazer um diagrama todo bonito a mostrar o sistema de realimentação
-\subsection{Operating Points}
-\label{section:dvfs}
-apresentar no final DVFS 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Dynamic Control of Voltage and Frequency}
+\label{section:dcvf}
+
+%Need to reduce power
+%talk about CPU
+%early GPUs
+%grande margem para fazer tudo, nao optimizado
+
+The widespread use of GPUs in both supercomputers as on personal machines comes at the cost of a significant increase in the power consumption of the complete system. Whereas a typical modern CPU consumes about 50 to 100W, it is common to see GPUs rounding that value to 200 to 300W of power. With these figures, it is indispensable the use of energy efficiency techniques to try to reduce power consumption.
+
+On any CMOS circuit, the total power consumed is decomposed into the dynamic and static parts. The dynamic power is generated when the transistors flip their stages and correspond to the power of charging and discharging the internal net capacitances. This value is proportional to the frequency that this change occurs. Equation X represents the general form for dynamic power, where a represents the utilization factor, C the total capacitance of the circuit, V de transistors supplied voltage and f the operating frequency [R. Gonzalez, B. M. Gordon, and M. A. Horowitz. Supply and threshold voltage scaling for low power CMOS. IEEE Journal of Solid-State Circuits, 32(8):1210–1216, Aug 1997.
+].
+\begin{equation}
+    P_{dynamic} = aCV^2f
+\end{equation}
+
+
+On their turn, the static part of the power consumption is generated by Pleakage, Pshort-circuit and PDC [V. Kersun. Supply and threshold voltage scaling techniques in CMOS circuits. PhD thesis, University of Rochestor, 2004.]. The leakage power is independent of the transistors flip, and it represents the flow of electrons that exists between the transistors' source, drain, and gate. The short-circuit power comes from the instantaneous short-circuit connection between the supply voltage and the ground when the transistor flips. Finally, the Direct Current (DC) power corresponds to the power needed for powering the circuit. Equation XX represents the total power consumption sources.
+
+\begin{equation}
+    P_{total} = P_{dynamic} + P_{leakage} + P_{short-circuit} + P_{DC}
+\end{equation}
+
+By controlling the supplied voltage level and operating frequency of the circuit, it is possible to negotiate the total power being consumed, by mainly changing the dynamic power. It is important to notice that in early processors, using bigger manufacturers technologies compared to modern ones, the dynamic power accounted for the majority of power consumption. However,  nowadays the static power is also contributing heavily. [S. Hong. Modeling performance and power for energy-efficient GPGPU computing. PhD thesis, Georgia Institute of Technology, 2012.] [ S. Hong and H. Kim. An integrated GPU power and performance model. In ACM SIGARCH Computer Architecture News, volume 38, pages 280–289. ACM, 2010.]
+
 \subsection{Control Theory}
-\subsection{GPU DVFS}
-\subsubsection{Dynamic Voltage and Frequency Scaling Effects}
-\label{section:solarch}
+Fazer um diagrama todo bonito a mostrar o sistema de realimentação
+
+\subsection{Clock splitting techniques}
+
+\subsection{DVFS Optimizations}
+
+\subsection{Dynamic Voltage and Frequency Scaling Effects}
 https://www.researchgate.net/publication/261725696_A_Survey_of_Methods_For_Analyzing_and_Improving_GPU_Energy_Efficiency
+
+
+
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Models}
 \subsection{Power Modeling}
@@ -103,10 +149,15 @@ https://www.researchgate.net/publication/261725696_A_Survey_of_Methods_For_Analy
 \subsubsection{Empirical Methods}
 \subsubsection{Statistical Methods}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Performance Modeling}
 \label{section:powermodels}
 \subsubsection{Pipeline Analysis}
 \subsubsection{Statistical Methods}
 Performance Counters
 
+\section{Related Work}
+
+\section{Summary}
+
+
+For the early processing units, the dynamic power accounts for the majority of power consumption, but nowadays the static power is also contributing considerably
