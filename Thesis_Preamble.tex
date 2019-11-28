@@ -24,6 +24,9 @@
 \usepackage[utf8]{inputenc}   % <<<<< Linux
 % ******************************* SELECT *******************************
 
+% Helpful to detect undefined Unicode characters!!!
+%
+%\DeclareUnicodeCharacter{202C}{!!!FIX ME!!!} 
 
 % 'babel' package
 %
@@ -547,3 +550,5 @@
         sum/.style = {draw, circle, node distance=1cm},
     }
     
+% Places indent of the first paragraph after a section and chapter
+\usepackage{indentfirst}

@@ -25,7 +25,7 @@ The development of improved frameworks and programming methodologies are making 
 
 
 \subsection{General Overview of GPU Architecture}
-The architecture of the GPU can be roughly divided into computation and memory components. The computation part is composed of the vertex shader, the rendering engine, and the RISC processors. The vertex shader and rendering engine are inserted on the graphics pipeline and are not generally used on GPGPU applications. The RISC processors are responsible for the GPU programmable calculations, and depending on the manufacturer, can be called streaming multiprocessors (SMs) in NVIDIA GPUs \cite{nvidia_cuda_nodate} or computing units (CU) in AMD GPUs \cite{amd_amd_nodate}. To support thousands of concurrent threads simultaneously, each CU is made up of hundreds of execution units. Every CU has a statically allocated register file, where each thread can reserve a physical part of it \cite{jing_energy-efficient_2013}. To enable concurrent execution of multiple threads in a single CU and allow low-overhead context switch, modern GPUs provide a large register file, where the context of all active threads can be stored. For reference, in the AMD GNC architecture, each CU has ‭49,152‬ (32-bit) registers.
+The architecture of the GPU can be roughly divided into computation and memory components. The computation part is composed of the vertex shader, the rendering engine, and the RISC processors. The vertex shader and rendering engine are inserted on the graphics pipeline and are not generally used on GPGPU applications. The RISC processors are responsible for the GPU programmable calculations, and depending on the manufacturer, can be called streaming multiprocessors (SMs) in NVIDIA GPUs \cite{nvidia_cuda_nodate} or computing units (CU) in AMD GPUs \cite{amd_amd_nodate}. To support thousands of concurrent threads simultaneously, each CU is made up of hundreds of execution units. Every CU has a statically allocated register file, where each thread can reserve a physical part of it \cite{jing_energy-efficient_2013}. To enable concurrent execution of multiple threads in a single CU and allow low-overhead context switch, modern GPUs provide a large register file, where the context of all active threads can be stored. For reference, in the AMD GNC architecture, each CU has 49152 (32-bit) registers.
 
 In terms of memory, both the AMD and the NVIDIA GPU present a 3 level hierarchy system: a global memory, accessible by all processors units (generally referred as video memory); a shared memory associated with each SM or CU, accessible by the processing units of that SM or CU; and a set of read-only caches for constants and textures.
 
@@ -33,14 +33,14 @@ A GPU from AMD will be used to conduct the experimental part of this dissertatio
 
 \subsection{AMD Graphics Core Next}
 
-The AMD Graphics Core Next (GCN) [Vega whitepaper - https://www.techpowerup.com/gpu-specs/docs/amd-vega-architecture.pdf] architecture includes both the GPU microarchitecture as well as the instruction set of the processor unit. It was first released in 2012 and it is already in its fifth iteration with the codename Vega. The Vega microarchitecture is based on a multiprocessor chip with an array of 64 RISC SIMT processors called Compute Engine (CE). Respectively, each CE is constituted by 64 Next Compute Units (NCU), performing a total of 4096 stream processors. also called Compute Units. The interface between the GPU and the Host is done throw the Peripheral Compute Interconnect Express (PCIe). Figure \ref{Vega10arch} represents the logical organization of a Vega GPU. 
+The AMD Graphics Core Next (GCN) \cite{amd_radeons_nodate}  architecture includes both the GPU microarchitecture as well as the instruction set of the processor unit. It was first released in 2012 and it is already in its fifth iteration with the codename Vega. The Vega microarchitecture is based on a multiprocessor chip with an array of 64 RISC SIMT processors called Compute Engine (CE). Respectively, each CE is constituted by 64 Next Compute Units (NCU), performing a total of 4096 stream processors. also called Compute Units. The interface between the GPU and the Host is done throw the Peripheral Compute Interconnect Express (PCIe). Figure \ref{fig:Vega10arch} represents the logical organization of a Vega GPU. 
 
 \begin{figure}[!htb]
   \begin{subfigmatrix}{2}
     \subfigure[Chip block diagram, example with 4 CEs]{\includegraphics[width=0.7\linewidth]{Figures/StateArt/Vega10_microarchitecture.png}}
     \subfigure[NCU]{\includegraphics[width=0.29\linewidth]{Figures/StateArt/NCU.png}}
   \end{subfigmatrix}
-  \caption{Some aircrafts.}
+  \caption{AMD's Graphics Core NExt logical Organization.}
   \label{fig:Vega10arch}
 \end{figure}
 
@@ -65,10 +65,17 @@ In the development of the work of this dissertation, a Radeon Vega Frontier Edit
 
 \subsection{Radeon Open Compute platform}
 
-The Radeon Open Compute (ROC) platform provides support for a set of frameworks and tools to allow developers to program and control the AMD GPUs.  In the following subsections, the ROCM-SMI [https://github.com/RadeonOpenCompute/ROC-smi] and ROC-Profiler [https://github.com/ROCm-Developer-Tools/rocprofiler] tools, used on the development of this work, are described.
+The Radeon Open Compute (ROC) \cite{noauthor_radeonopencompute/rocm_2019} platform provides support for a set of frameworks and tools to allow developers to program and control the AMD GPUs. Figure \ref{fig:rocmplatform} shows the high-level organization of the platform. The platform includes a set of tools that allows developers to access ROC Kernel Driver data. In the following subsections, two of those tools, the ROCM-SMI \cite{noauthor_radeonopencompute/roc-smi_2019} and ROC-Profiler \cite{noauthor_rocm-developer-tools/rocprofiler_2019} tools, used on the development of this work, are described.
+
+\begin{figure}[!htb]
+  \centering
+  \includegraphics[width=0.5\textwidth]{Figures/StateArt/ROC_stack.jpg}
+  \caption{Organization of the ROC platform.}
+  \label{fig:rocmplatform}
+\end{figure}
 
 \subsubsection{ROCM-SMI}
-The ROCm System Management Interface (ROC-SMI) [https://github.com/RadeonOpenCompute/ROC-smi] is a user-friendly command-line application for manipulating the Radeon Open Compute Kernel (ROCK). The application uses sysfs files to query and manipulate the device kernel using the libsensors library [https://linux.die.net/man/3/libsensors]. Using it, it is possible to know and control the state of the GPU device.
+The ROCm System Management Interface (ROC-SMI) \cite{noauthor_radeonopencompute/roc-smi_2019} is a user-friendly command-line application for manipulating the Radeon Open Compute Kernel (ROCK). The application uses sysfs files to query and manipulate the device kernel using the libsensors library \cite{noauthor_libsensors3:_nodate}. Using it, it is possible to know and control the state of the GPU device.
 
 From the set of query and control directives enabled by ROC-SMI, the following are of particular interest for the topic of this dissertation:
 
@@ -95,7 +102,7 @@ The versatility and total and independent control of the clock rate and voltage 
 
 \subsubsection{ROC-Profiler}
 
-The Radeon Open Compute Profiler [https://github.com/ROCm-Developer-Tools/rocprofiler] is a profiling and tracing library for applications developed using any of the programming frameworks available on the ROC platform (OpenCL, HC++, HIP [Evaluating Performance Tradeoffs on the Radeon Open Compute Platform]). The library gives access to the performance counters of AMD GPUs, allowing developers to configure the start, stop, read and reset of the physical registers on the microarchitecture that count the number of events (number of instructions per type, cache hits/miss, etc) that the device is performing.
+The Radeon Open Compute Profiler \cite{noauthor_rocm-developer-tools/rocprofiler_2019} is a profiling and tracing library for applications developed using any of the programming frameworks available on the ROC platform (OpenCL, HC++, HIP) \cite{sun_evaluating_2018}. The library gives access to the performance counters of AMD GPUs, allowing developers to configure the start, stop, read and reset of the physical registers on the microarchitecture that count the number of events (number of instructions per type, cache hits/miss, etc) that the device is performing.
 
 The instrumentation of applications with the API calls to rocprofiler allows for close monitoring of the operations being performed and can give important insights about the relation that the running code as with the results being achieved on the frequency and voltage exploration.
 
@@ -103,30 +110,33 @@ The instrumentation of applications with the API calls to rocprofiler allows for
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-\section{Dynamic Control of Voltage and Frequency}
+\section{Dynamic Voltage and Frequency Scaling}
 \label{section:dcvf}
 
 The widespread use of GPUs in both supercomputers as on personal machines comes at the cost of a significant increase in the power consumption of the complete system. Whereas a typical modern CPU consumes about 50 to 100W, it is common to see GPUs rounding that value to 200 to 300W of power. With these figures, it is indispensable the use of energy efficiency techniques to try to reduce power consumption.
 
-On any CMOS circuit, the total power consumed is decomposed into the dynamic and static parts. The dynamic power is generated when the transistors flip their stages and correspond to the power of charging and discharging the internal net capacitances. This value is proportional to the frequency that this change occurs. Equation X represents the general form for dynamic power, where a represents the utilization factor, C the total capacitance of the circuit, V de transistors supplied voltage and f the operating frequency [R. Gonzalez, B. M. Gordon, and M. A. Horowitz. Supply and threshold voltage scaling for low power CMOS. IEEE Journal of Solid-State Circuits, 32(8):1210–1216, Aug 1997.
-].
+On any CMOS circuit, the total power consumed is decomposed into the dynamic and static parts. The dynamic power is generated when the transistors flip their stages and correspond to the power of charging and discharging the internal net capacitances. This value is proportional to the frequency that this change occurs. Equation \ref{eq:dynpower} represents the general formu for dynamic power, where \textit{a} represents the utilization factor, \textit{C} the total capacitance of the circuit, \textit{V} the transistors supplied voltage and \textit{f} the operating frequency \cite{gonzalez_supply_1997}.
 \begin{equation}
     P_{dynamic} = aCV^2f
+    \label{eq:dynpower}
 \end{equation}
 
 
-On their turn, the static part of the power consumption is generated by Pleakage, Pshort-circuit and PDC [V. Kersun. Supply and threshold voltage scaling techniques in CMOS circuits. PhD thesis, University of Rochestor, 2004.]. The leakage power is independent of the transistors flip, and it represents the flow of electrons that exists between the transistors' source, drain, and gate. The short-circuit power comes from the instantaneous short-circuit connection between the supply voltage and the ground when the transistor flips. Finally, the Direct Current (DC) power corresponds to the power needed for powering the circuit. Equation XX represents the total power consumption sources.
+On their turn, the static part of the power consumption is generated by $P_{leakage}$, $P_{short-circuit}$ and $P_{DC}$ \cite{mei_survey_2016}. The leakage power is independent of the transistors flip, and it represents the flow of electrons that exists between the transistors' source, drain, and gate. The short-circuit power comes from the instantaneous short-circuit connection between the supply voltage and the ground when the transistor flips. Finally, the Direct Current (DC) power corresponds to the power needed for powering the circuit. Equation \ref{eq:cmospower} represents the total power consumption sources.
 
 \begin{equation}
     P_{total} = P_{dynamic} + P_{leakage} + P_{short-circuit} + P_{DC}
+    \label{eq:cmospower}
 \end{equation}
 
-By controlling the supplied voltage level and operating frequency of the circuit, it is possible to negotiate the total power being consumed, by mainly changing the dynamic power. It is important to notice that in early processors, using bigger manufacturers technologies compared to modern ones, the dynamic power accounted for the majority of power consumption. However,  nowadays the static power is also contributing heavily. [S. Hong. Modeling performance and power for energy-efficient GPGPU computing. PhD thesis, Georgia Institute of Technology, 2012.] [ S. Hong and H. Kim. An integrated GPU power and performance model. In ACM SIGARCH Computer Architecture News, volume 38, pages 280–289. ACM, 2010.]
+The total power consumption of a circuit is dominated by the dynamic power, however, with the reduction of the manufacturing size of the transistor seen nowadays, the static power is also contributing heavily \cite{s._hong_modeling_2012} \cite{hong_integrated_2010}. 
+
+By controlling the supplied voltage level and operating frequency of a processor, it is possible to negotiate the total power being consumed. The "on the fly" control of these parameters is called Dynamic Voltage and Frequency Scaling (DVFS). This power management technique allows for an energy efficiency improvement by matching the voltage and frequency of the processor to the utilization that is being given to it.
 
 
 %grande margem para fazer tudo, nao optimizado
 
-\subsection{Control Theory}
+\subsection{Control Mechanism}
 Fazer um diagrama todo bonito a mostrar o sistema de realimentação
 
 \subsection{Clock splitting techniques}

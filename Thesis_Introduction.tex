@@ -28,12 +28,12 @@ This result shows that there is space to be explored outside of the conventional
 
 The objective of this dissertation is to create a new DVFS mechanism that is aware of the nature of the application being run and the results that are being produced by it, to reduce the total power consumption of the GPU. With this new mechanism, it will be possible to enlarge the voltage and frequency margins, working outside of the conventional DVFS limits in current hardware. 
 
-With this objective, it is first necessary to test different classes of machine learning algorithms, to find their imprecision tolerance and what are the impacts of running them with not default DFVS parameters. Parallel to it, a way of acquiring meaningful performance counters in runtime about the running application has to be found. With these two modules, it will be possible to validate how big is the impact of running applications in such a manner and understand how does the performance metrics relate to the voltage and frequency. The acquired relations will be used to create a model that tries to minimize energy consumption by controlling the voltage and frequency of the GPU. The last step of the presented work is to test the new DVFS aware model and understand the degree of improvement achieved. Figure \ref{thesisObj} graphically shows the temporal relation between the different objectives to be performed during the dissertation.
+With this objective, it is first necessary to test different classes of machine learning algorithms, to find their imprecision tolerance and what are the impacts of running them with not default DFVS parameters. Parallel to it, a way of acquiring meaningful performance counters in runtime about the running application has to be found. With these two modules, it will be possible to validate how big is the impact of running applications in such a manner and understand how does the performance metrics relate to the voltage and frequency. The acquired relations will be used to create a model that tries to minimize energy consumption by controlling the voltage and frequency of the GPU. The last step of the presented work is to test the new DVFS aware model and understand the degree of improvement achieved. Figure \ref{fig:thesisObj} graphically shows the temporal relation between the different objectives to be performed during the dissertation.
 
 \begin{figure}[!htb]
   \centering
   \includegraphics[width=1\textwidth]{Figures/Introduction/Dissertation_Objectives.png}
-  \caption[]{Flowchart of dissertation objectives.}
+  \caption{Flowchart of dissertation objectives.}
   \label{fig:thesisObj}
 \end{figure}
 

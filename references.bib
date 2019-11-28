@@ -1,4 +1,85 @@
 
+@inproceedings{hong_integrated_2010,
+	address = {New York, NY, USA},
+	series = {{ISCA} '10},
+	title = {An {Integrated} {GPU} {Power} and {Performance} {Model}},
+	isbn = {978-1-4503-0053-7},
+	url = {http://doi.acm.org/10.1145/1815961.1815998},
+	doi = {10.1145/1815961.1815998},
+	abstract = {GPU architectures are increasingly important in the multi-core era due to their high number of parallel processors. Performance optimization for multi-core processors has been a challenge for programmers. Furthermore, optimizing for power consumption is even more difficult. Unfortunately, as a result of the high number of processors, the power consumption of many-core processors such as GPUs has increased significantly. Hence, in this paper, we propose an integrated power and performance (IPP) prediction model for a GPU architecture to predict the optimal number of active processors for a given application. The basic intuition is that when an application reaches the peak memory bandwidth, using more cores does not result in performance improvement. We develop an empirical power model for the GPU. Unlike most previous models, which require measured execution times, hardware performance counters, or architectural simulations, IPP predicts execution times to calculate dynamic power events. We then use the outcome of IPP to control the number of running cores. We also model the increases in power consumption that resulted from the increases in temperature. With the predicted optimal number of active cores, we show that we can save up to 22.09\%of runtime GPU energy consumption and on average 10.99\% of that for the five memory bandwidth-limited benchmarks.},
+	urldate = {2019-11-28},
+	booktitle = {Proceedings of the 37th {Annual} {International} {Symposium} on {Computer} {Architecture}},
+	publisher = {ACM},
+	author = {Hong, Sunpyo and Kim, Hyesoon},
+	year = {2010},
+	note = {event-place: Saint-Malo, France},
+	keywords = {CUDA, GPU architecture, analytical model, energy, performance, power estimation},
+	pages = {280--289}
+}
+
+@phdthesis{s._hong_modeling_2012,
+	type = {{PhD} thesis},
+	title = {Modeling performance and power for energy-efficient {GPGPU} computing},
+	url = {https://smartech.gatech.edu/handle/1853/45922},
+	abstract = {The objective of the proposed research is to develop an analytical model that predicts performance and power for many-core architecture and further propose a mechanism, which leverages the analytical model, to enable energy-efficient execution of an application. The key insight of the model is to investigate and quantify a complex relationship that exists between the thread-level parallelism and memory-level parallelism for an application on a given many-core architecture. Two metrics are proposed: memory warp parallelism (MWP), which refers to the number of overlapping memory accesses per core, and computation warp parallelism (CWP), which characterizes an application type. By using these metrics in addition to the architectural and application parameters, the overall application performance is produced. The model uses statically-available parameters such as instruction-mixture information and input-data size, and the prediction accuracy is 13.3\% for the GPU-computing benchmarks. Another important aspect of using many-core architecture is reducing peak power and achieving energy savings. By using the proposed integrated power and performance (IPP) framework, the results showed that different optimization points exist for GPU architecture depending on the application type. The work shows that by activating fewer cores, 10.99\% of run-time energy consumption can be saved for the bandwidth-limited benchmarks, and a projection of 25.8\% energy savings is predicted when power-gating at core level is employed. Finally, the model is shifted to throughput using OpenCL for targeting more variety of processors. First, multiple outputs relating to performance are predicted, including upper-bound and lower-bound values. Second, by using the model parameters, an application can be categorized into a different category, each with its own suggestions for improving performance and energy efficiency. Third, the bandwidth saturation point accuracy is significantly improved by considering independent memory accesses and updating the performance model. Furthermore, a trade-off analysis using architectural and application parameters is straightforward, which provides more insights to improve energy efficiency. In the future, a computer system will contain hundreds of heterogeneous cores. Hence, it is mandatory that a workload gets scheduled to an efficient core or distributed on both types of cores. A preliminary work by using the analytical model to do scheduling between CPU and GPU is demonstrated in the appendix. Since profiling phase is not required, the kernel code can be transformed to run more efficiently on the specific architecture. Another extension of the work regarding the relationship between the speed-up and energy efficiency is mathematically derived. Finally, future research ideas are presented regarding the usage of the model for programmer, compiler, and runtime for future heterogeneous systems.},
+	urldate = {2019-11-28},
+	school = {Georgia Institute of Technology},
+	author = {{S. Hong}},
+	year = {2012}
+}
+
+@article{gonzalez_supply_1997,
+	title = {Supply and threshold voltage scaling for low power {CMOS}},
+	volume = {32},
+	issn = {1558-173X},
+	doi = {10.1109/4.604077},
+	abstract = {This paper investigates the effect of lowering the supply and threshold voltages on the energy efficiency of CMOS circuits. Using a first-order model of the energy and delay of a CMOS circuit, we show that lowering the supply and threshold voltage is generally advantageous, especially when the transistors are velocity saturated and the nodes have a high activity factor, In fact, for modern submicron technologies, this simple analysis suggests optimal energy efficiency at supply voltages under 0.5 V. Other process and circuit parameters have almost no effect on this optimal operating point. If there is some uncertainty in the value of the threshold or supply voltage, however, the power advantage of this very low voltage operation diminishes. Therefore, unless active feedback is used to control the uncertainty, in the future the supply and threshold voltage will not decrease drastically, but rather will continue to scale down to maintain constant electric fields.},
+	number = {8},
+	journal = {IEEE Journal of Solid-State Circuits},
+	author = {Gonzalez, R. and Gordon, B.M. and Horowitz, M.A.},
+	month = aug,
+	year = {1997},
+	keywords = {0.25 mum, 120 mV, 250 mV, CMOS integrated circuits, CMOS process, CMOS technology, Circuits, Delay effects, Energy efficiency, Feedback, HSPICE models, Low voltage, SPICE, Semiconductor device modeling, Threshold voltage, Uncertainty, active feedback, circuit feedback, circuit optimisation, delay, delays, energy efficiency, energy-delay product, first-order model, high activity factor nodes, integrated circuit modelling, low power CMOS, optimal operating point, sleep mode, submicron technologies, supply voltage scaling, threshold voltage scaling, velocity saturated transistors},
+	pages = {1210--1216}
+}
+
+@misc{noauthor_libsensors3:_nodate,
+	title = {libsensors(3): publicly accessible functions - {Linux} man page},
+	url = {https://linux.die.net/man/3/libsensors},
+	urldate = {2019-11-28}
+}
+
+@misc{noauthor_rocm-developer-tools/rocprofiler_2019,
+	title = {{ROCm}-{Developer}-{Tools}/rocprofiler},
+	copyright = {MIT},
+	url = {https://github.com/ROCm-Developer-Tools/rocprofiler},
+	abstract = {ROC profiler library. Profiling with perf-counters and derived metrics.},
+	urldate = {2019-11-28},
+	publisher = {ROCm Developer Tools},
+	month = nov,
+	year = {2019},
+	note = {original-date: 2018-07-17T15:49:55Z}
+}
+
+@misc{noauthor_radeonopencompute/roc-smi_2019,
+	title = {{RadeonOpenCompute}/{ROC}-smi},
+	url = {https://github.com/RadeonOpenCompute/ROC-smi},
+	abstract = {ROC System Management Interface. Contribute to RadeonOpenCompute/ROC-smi development by creating an account on GitHub.},
+	urldate = {2019-11-28},
+	publisher = {ROCm Core Technology},
+	month = nov,
+	year = {2019},
+	note = {original-date: 2016-05-11T20:56:10Z}
+}
+
+@misc{amd_radeons_nodate,
+	title = {Radeon’s next-generation {Vega} architecture - {Whitepaper}},
+	url = {https://www.techpowerup.com/gpu-specs/docs/amd-vega-architecture.pdf},
+	language = {en-us},
+	urldate = {2019-11-28},
+	author = {{AMD}}
+}
+
 @inproceedings{jing_energy-efficient_2013,
 	address = {New York, NY, USA},
 	series = {{ISCA} '13},
@@ -427,7 +508,6 @@
 	author = {Cameirinha, Diogo},
 	pages = {87}
 }
-
 @inproceedings{chang_learning-directed_2011,
 	title = {Learning-{Directed} {Dynamic} {Voltage} and {Frequency} {Scaling} for {Computation} {Time} {Prediction}},
 	doi = {10.1109/TrustCom.2011.140},
@@ -483,6 +563,7 @@
 	keywords = {Android Linux kernel, Batteries, CPUFreq Governors, DVFS, DVFS model, Energy Efficiency, Energy consumption, GPU, GPUFreq scaling governors, Graphics processing units, Kernel, Linux, Smartphones, Three-dimensional displays, battery life, dynamic voltage and frequency scaling model, energy consumption, energy measurement, graphical performance, graphical processing units, graphics processing units, green smartphone GPU, massive battery drainage, optimisation, power consumption, power monitor, smart phones, telecommunication control, telecommunication power management},
 	pages = {740--747}
 }
+
 @inproceedings{nachiappan_domain_2015,
 	title = {Domain knowledge based energy management in handhelds},
 	doi = {10.1109/HPCA.2015.7056029},

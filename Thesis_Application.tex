@@ -8,13 +8,16 @@
 %                                                                      %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\chapter{Preliminary Results}
-\label{chapter:preliminaryresults}
+\chapter{Application to Deep Learning}
+\label{chapter:application}
 
+\section{Deep Learning Overview}
+\section{Benchmarks}
+\section{Feasibility Assessment}
 To assess the viability of the claim made in Chapter 1, that there are more viable and efficient sets of voltage and frequency that can be employed when Imprecision Tolerant applications are being run, a set of experiments were devised to test the order of magnitude of the energy savings and what are the impacts of working in not default voltage and frequency settings. Accordingly, this chapter starts by presenting the experimental setup in Section \ref{section:experimental_setup}, namely the benchmark application and how was it developed and the GPU devices where the tests were executed. Afterwords, Section \ref{section:dvfseffects} presents some interesting results related to the execution of the application with not default GPU parameters.
 
 
-\section{Experimental setup}
+\subsection{Experimental setup}
 \label{section:experimental_setup}
 
 To experimentally show the possible gains achieved when working in the setup presented before, an Artificial Neural Network is executed on a GPU, and in each run, the pair of frequency and voltage is adjusted. This section presents the application chosen to perform the preliminary tests, followed by a description of the GPU device where the experiments were conducted.
@@ -64,14 +67,14 @@ The CNN was trained using the Radeon Vega Frontier Edition GPU, a top of the lin
 
 
 
-\section{GPU DVFS Effects}
+\subsection{Preleminary Results}
 \label{section:dvfseffects}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{OverClock}
+\subsubsection{OverClock}
 \label{section:underclock}
 
-\subsection{UnderVoltage}
+\subsubsection{UnderVoltage}
 
 
 
