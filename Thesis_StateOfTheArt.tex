@@ -69,7 +69,7 @@ The Radeon Open Compute (ROC) \cite{noauthor_radeonopencompute/rocm_2019} platfo
 
 \begin{figure}[!htb]
   \centering
-  \includegraphics[width=0.5\textwidth]{Figures/StateArt/ROC_stack.jpg}
+  \includegraphics[width=0.4\textwidth]{Figures/StateArt/ROC_stack.jpg}
   \caption{Organization of the ROC platform.}
   \label{fig:rocmplatform}
 \end{figure}
@@ -134,13 +134,11 @@ The total power consumption of a circuit is dominated by the dynamic power, howe
 
 By intelligently controlling the clock frequency, the necessary voltage for stable operation of the circuit can also be reduced, leading to power savings. However, the reduction of the operating frequency harms the pic performance of the circuit, so a careful scaling of voltage/frequency needs to be done in run-time. The "on the fly" control of these parameters is called Dynamic Voltage and Frequency Scaling (DVFS). This power management technique allows for an energy efficiency improvement by matching the voltage and frequency of the processor to the utilization that is being given to it.
 
-
-
 In general, modern GPU boards have independent control over two pairs of frequency and voltage. Each pair or domain acts on a distinct part of the GPU, intending to maximize the performance or reduce the power consumption. The first domain concerns the GPU core, acting on all CUs, the cache, and the interconnection fabric. The second affects the DRAM chips that compose the video memory. 
 
 The clock frequency is an independent control variable and its change is reflected directly on the performed achieved by the GPU. An increase in the clock frequency of the core results in an improvement of the CU execution speed, while the same change in the memory frequency will increase the DRAM I/O throughput \cite{mei_survey_2016}. The voltage level of each domain is dependent on the clock frequency and is computed based on tests performed by the manufacturer that ensure the correct operation of the circuit, independently of the workload that is being given.
 
-Both AMD and NVIDIA equip their GPUs with complex DVFS systems that choose the most appropriate combination of GPU voltage and frequency for each domain.  In the case of AMD, the GPU core has 8 possible pairs, table \ref{tab:gpucorelevels}, while the GPU memory has only 4, table \ref{tab:gpumemlevels}. Through the use of software like ROC-SMI \cite{noauthor_radeonopencompute/roc-smi_2019} it is possible for the user to input the desired combination of values for each level, allowing for an almost continuously selection of values for the frequency and voltage within the specifications range. For example, on the Vega 10 Frontier Edition used on the experimental work of this thesis, the GPU core frequency can be set between 852 and 1980 MHz and the GPU memory frequency between 167 and 1500 MHz. The voltage is set between the 800 and 1250 mV. As stated before, the major benefit of AMD over NVIDIA's solution is that this manufacturer allows for the override of the automatic computation of the GPU voltage. This difference is of significant importance since it allows finer control of the DVFS values and a more interesting possibility of exploration of the voltage level.
+Both AMD and NVIDIA have on their products the concept of performance levels, that is, a set of pairs of frequency and voltage that can be applied to the many components of the GPU. These vary from low power and performance levels to high performance and high power ones. The idea on having multiple performance levels is to be able to always be at the best point of operation.  In the case of AMD, the GPU core has 8 possible pairs, table \ref{tab:gpucorelevels} shows the reference values of frequency and voltage for each of the core performance levels, while the GPU memory has only 4, table \ref{tab:gpumemlevels}. Through the use of software like ROC-SMI \cite{noauthor_radeonopencompute/roc-smi_2019} the user can input the desired combination of values for each level, allowing for an almost continuously selection of values for the frequency and voltage within the specifications range. For example, on the Vega 10 Frontier Edition used on the experimental work of this thesis, the GPU core frequency can be set between 852 and 1980 MHz and the GPU memory frequency between 167 and 1500 MHz. The voltage is set between the 800 and 1250 mV. As stated before, the major benefit of AMD over NVIDIA's solution is that this manufacturer allows for the override of the automatic computation of the GPU voltage. This difference is of significant importance since it allows finer control of the DVFS values and a more interesting possibility of exploration of the voltage level.
 
 \begin{table}[!htb]
 \renewcommand{\arraystretch}{1.2} % more space between rows
@@ -174,10 +172,14 @@ Both AMD and NVIDIA equip their GPUs with complex DVFS systems that choose the m
 \label{tab:gpumemlevels}
 \end{table}
 
-
-
-
 \subsection{Control Mechanism}
+
+The correct choice of the most appropriate performance level for each of the GPU clock domains is one of the topics of more research from both the manufactures and researchers. The correct design of the DVFS controller has a significant impact on the energy efficiency of the GPU.
+
+The first implementations of GPU DVFS controllers took direct inspiration from the CPU DVFS. These used strategies like scaling up the processor frequency, race-to-idle \cite{hoffmann_racing_2013}, when a task is launched in the pursuit of finishing it as fast as possible and return to an idle state. However, "racing", as described in \cite{kim_racing_2015}, that prof to increase the energy efficiency of CPUs, does not always result in the same outcome for GPUs \cite{kim_racing_2015}.
+
+In general, the challenges of creating a better GPU DVFS are  related to the GPU power management being very limited, the lack of accurate quantitative GPU DVFS performance and power estimation tools and the fact that the GPU architecture design is still evolving rapidly, which makes the strategies applied to one architecture design have different outcomes on the next iteration of it \cite{mei_survey_2016}.
+
 
 \begin{figure}[!htb]
   \centering

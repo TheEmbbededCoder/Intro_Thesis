@@ -1,4 +1,37 @@
 
+@inproceedings{hoffmann_racing_2013,
+	address = {New York, NY, USA},
+	series = {{HotPower} '13},
+	title = {Racing and {Pacing} to {Idle}: {An} {Evaluation} of {Heuristics} for {Energy}-aware {Resource} {Allocation}},
+	isbn = {978-1-4503-2458-8},
+	shorttitle = {Racing and {Pacing} to {Idle}},
+	url = {http://doi.acm.org/10.1145/2525526.2525854},
+	doi = {10.1145/2525526.2525854},
+	abstract = {We examine the problem of assigning computing resources to an application to meet a performance goal while minimizing energy consumption. We present a general formulation of this problem as a linear program, discuss several potential heuristic solutions, and evaluate these heuristics on two real systems (one purchased in 2010, the other in 2013). We find that the well-known race-to-idle heuristic is close to the optimal solution on the older machine. On the newer machine, however, the optimal solution outperforms race-to-idle by over 35\%. A generalization of race-to-idle, called pace-to-idle, is found to provide better results in a wider range of scenarios.},
+	urldate = {2019-11-29},
+	booktitle = {Proceedings of the {Workshop} on {Power}-{Aware} {Computing} and {Systems}},
+	publisher = {ACM},
+	author = {Hoffmann, Henry},
+	year = {2013},
+	note = {event-place: Farmington, Pennsylvania},
+	keywords = {energy-aware computing, optimization, power-aware computing, resource allocation},
+	pages = {13:1--13:5}
+}
+
+@inproceedings{kim_racing_2015,
+	title = {Racing and {Pacing} to {Idle}: {Theoretical} and {Empirical} {Analysis} of {Energy} {Optimization} {Heuristics}},
+	shorttitle = {Racing and {Pacing} to {Idle}},
+	doi = {10.1109/CPSNA.2015.23},
+	abstract = {The problem of minimizing energy for a performance constraint (e.g., Real-time deadline or quality-of-service requirement) has been widely studied, both in theory and in practice. Theoretical models have indicated large potential energy savings, but practical concerns have made these savings hard to realize. Instead, practitioners often rely on heuristic solutions, which achieve good results in practice but tend to be system-specific in efficacy. An example is the race-to-idle heuristic, which makes all resources available until a task completes and then idles. Theory predicts poor energy savings, but practitioners have reported good empirical results. To help bridge the gap between theory and practice, this paper presents a geometrical framework for analyzing the energy optimality of resource allocation under performance constraints. The geometry of the problem allows us to derive an optimal strategy and three commonly used heuristics: 1) race-to-idle, 2) pace-to-idle a near-optimal idling strategy, and 3) no-idle which never idles. We then implement all strategies and test them empirically for seven benchmarks on four different multicore systems, including both x86 and ARM. We find that race-to-idle is near optimal on older systems, but can consume as much as 3× more energy than the optimal strategy. In contrast, pace-to-idle is never more than 12\% worse than optimal.},
+	booktitle = {2015 {IEEE} 3rd {International} {Conference} on {Cyber}-{Physical} {Systems}, {Networks}, and {Applications}},
+	author = {Kim, David H.K. and Imes, Connor and Hoffmann, Henry},
+	month = aug,
+	year = {2015},
+	note = {ISSN: null},
+	keywords = {ARM, Energy consumption, Heuristic algorithms, Multicore processing, Optimization, Power demand, Program processors, Resource management, energy minimization, energy optimization heuristics, energy savings, geometrical framework, heuristic solutions, multicore systems, near-optimal idling strategy, no-idle heuristic, optimal strategy, pace-to-idle heuristic, performance constraints, power aware computing, race-to-idle heuristic, resource allocation, x86},
+	pages = {78--85}
+}
+
 @inproceedings{hong_integrated_2010,
 	address = {New York, NY, USA},
 	series = {{ISCA} '10},
@@ -485,7 +518,6 @@
 	author = {Vieira, Ricardo Manuel Nunes},
 	pages = {84}
 }
-
 @inproceedings{lopes_exploring_2017,
 	address = {Santa Rosa, CA, USA},
 	title = {Exploring {GPU} performance, power and energy-efficiency bounds with {Cache}-aware {Roofline} {Modeling}},
@@ -508,6 +540,7 @@
 	author = {Cameirinha, Diogo},
 	pages = {87}
 }
+
 @inproceedings{chang_learning-directed_2011,
 	title = {Learning-{Directed} {Dynamic} {Voltage} and {Frequency} {Scaling} for {Computation} {Time} {Prediction}},
 	doi = {10.1109/TrustCom.2011.140},
