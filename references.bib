@@ -1,4 +1,321 @@
 
+@inproceedings{wu_gpgpu_2015,
+	title = {{GPGPU} performance and power estimation using machine learning},
+	doi = {10.1109/HPCA.2015.7056063},
+	abstract = {Graphics Processing Units (GPUs) have numerous configuration and design options, including core frequency, number of parallel compute units (CUs), and available memory bandwidth. At many stages of the design process, it is important to estimate how application performance and power are impacted by these options. This paper describes a GPU performance and power estimation model that uses machine learning techniques on measurements from real GPU hardware. The model is trained on a collection of applications that are run at numerous different hardware configurations. From the measured performance and power data, the model learns how applications scale as the GPU's configuration is changed. Hardware performance counter values are then gathered when running a new application on a single GPU configuration. These dynamic counter values are fed into a neural network that predicts which scaling curve from the training data best represents this kernel. This scaling curve is then used to estimate the performance and power of the new application at different GPU configurations. Over an 8× range of the number of CUs, a 3.3× range of core frequencies, and a 2.9× range of memory bandwidth, our model's performance and power estimates are accurate to within 15\% and 10\% of real hardware, respectively. This is comparable to the accuracy of cycle-level simulators. However, after an initial training phase, our model runs as fast as, or faster than the program running natively on real hardware.},
+	booktitle = {2015 {IEEE} 21st {International} {Symposium} on {High} {Performance} {Computer} {Architecture} ({HPCA})},
+	author = {Wu, Gene and Greathouse, Joseph L. and Lyashevsky, Alexander and Jayasena, Nuwan and Chiou, Derek},
+	month = feb,
+	year = {2015},
+	note = {ISSN: 2378-203X},
+	keywords = {CU, Engines, GPGPU, Graphics processing units, Hardware, Kernel, Predictive models, Radiation detectors, Training, graphics processing units, learning (artificial intelligence), machine learning, memory bandwidth, parallel compute unit, performance estimation, performance evaluation, power estimation},
+	pages = {564--576}
+}
+
+@inproceedings{song_simplified_2013,
+	title = {A {Simplified} and {Accurate} {Model} of {Power}-{Performance} {Efficiency} on {Emergent} {GPU} {Architectures}},
+	doi = {10.1109/IPDPS.2013.73},
+	abstract = {Emergent heterogeneous systems must be optimized for both power and performance at exascale. Massive parallelism combined with complex memory hierarchies form a barrier to efficient application and architecture design. These challenges are exacerbated with GPUs as parallelism increases orders of magnitude and power consumption can easily double. Models have been proposed to isolate power and performance bottlenecks and identify their root causes. However, no current models combine simplicity, accuracy, and support for emergent GPU architectures (e.g. NVIDIA Fermi). We combine hardware performance counter data with machine learning and advanced analytics to model power-performance efficiency for modern GPU-based systems. Our performance counter based approach is simpler than previous approaches and does not require detailed understanding of the underlying architecture. The resulting model is accurate for predicting power (within 2.1\%) and performance (within 6.7\%) for application kernels on modern GPUs. Our model can identify power-performance bottlenecks and their root causes for various complex computation and memory access patterns (e.g. global, shared, texture). We measure the accuracy of our power and performance models on a NVIDIA Fermi C2075 GPU for more than a dozen CUDA applications. We show our power model is more accurate and robust than the best available GPU power models - multiple linear regression models MLR and MLR+. We demonstrate how to use our models to identify power-performance bottlenecks and suggest optimization strategies for high-performance codes such as GEM, a biomolecular electrostatic analysis application. We verify our power-performance model is accurate on clusters of NVIDIA Fermi M2090s and useful for suggesting optimal runtime configurations on the Keeneland supercomputer at Georgia Tech.},
+	booktitle = {2013 {IEEE} 27th {International} {Symposium} on {Parallel} and {Distributed} {Processing}},
+	author = {Song, Shuaiwen and Su, Chunyi and Rountree, Barry and Cameron, Kirk W.},
+	month = may,
+	year = {2013},
+	note = {ISSN: 1530-2075},
+	keywords = {Adaptation models, CUDA application, Graphics processing units, Kernel, NVIDIA Fermi M2090s, Predictive models, Radiation detectors, Runtime, Training, complex memory hierarchy, emergent GPU architecture, emergent heterogeneous system, graphics processing units, high-performance code, machine learning, memory access pattern, multiple linear regression model, optimisation, optimization strategy, parallel architectures, power consumption, power-performance efficiency, regression analysis},
+	pages = {673--686}
+}
+
+@inproceedings{ghosh_statistical_2013,
+	title = {Statistical modeling of power/energy of scientific kernels on a multi-{GPU} system},
+	doi = {10.1109/IGCC.2013.6604488},
+	abstract = {Energy efficiency of GPUs has facilitated the usage of GPUs in many complex scientific applications. Nodes with multi-GPUs along with multi-core CPUs are quite common in today's HPC landscape. This gives the flexibility to utilize CPUs or accelerators or even both according to the workload characteristics. It is not possible to measure power and energy accurately in all the cases, an alternate approach is to estimate power and energy using statistical methods. Apart from saving time and money, reasonable prediction of power/energy would lead to power saving optimizations for certain applications, without compromising performance. In this paper we employ parametric and non-parametric regression analysis to model power and energy consumption of some of the common high performance kernels (DGEMM, FFT, PRNG and FD stencils) on a multi-GPU platform. Our experiments show that using a minimal set of hardware counters and performance attributes, the average error between the measured and the predicted values of power and energy is only {\textasciitilde} 4\%.},
+	author = {Ghosh, Sayan and Chandrasekaran, Sunita and Chapman, Barbara},
+	month = jun,
+	year = {2013},
+	pages = {1--6}
+}
+
+@inproceedings{abe_power_2014,
+	address = {Phoenix, AZ, USA},
+	title = {Power and {Performance} {Characterization} and {Modeling} of {GPU}-{Accelerated} {Systems}},
+	isbn = {978-1-4799-3800-1 978-1-4799-3799-8},
+	url = {http://ieeexplore.ieee.org/lpdocs/epic03/wrapper.htm?arnumber=6877247},
+	doi = {10.1109/IPDPS.2014.23},
+	abstract = {Graphics processing units (GPUs) provide an order-of-magnitude improvement on peak performance and performance-per-watt as compared to traditional multicore CPUs. However, GPU-accelerated systems currently lack a generalized method of power and performance prediction, which prevents system designers from an ultimate goal of dynamic power and performance optimization. This is due to the fact that their power and performance characteristics are not well captured across architectures, and as a result, existing power and performance modeling approaches are only available for a limited range of particular GPUs. In this paper, we present power and performance characterization and modeling of GPUaccelerated systems across multiple generations of architectures. Characterization and modeling both play a vital role in optimization and prediction of GPU-accelerated systems. We quantify the impact of voltage and frequency scaling on each architecture with a particularly intriguing result that a cutting-edge Kepler-based GPU achieves energy saving of 75\% by lowering GPU clocks in the best scenario, while Fermi- and Tesla-based GPUs achieve no greater than 40\% and 13\%, respectively. Considering these characteristics, we provide statistical power and performance modeling of GPU-accelerated systems simpliﬁed enough to be applicable for multiple generations of architectures. One of our ﬁndings is that even simpliﬁed statistical models are able to predict power and performance of cutting-edge GPUs within errors of 20\% to 30\% for any set of voltage and frequency pair.},
+	language = {en},
+	urldate = {2019-12-09},
+	booktitle = {2014 {IEEE} 28th {International} {Parallel} and {Distributed} {Processing} {Symposium}},
+	publisher = {IEEE},
+	author = {Abe, Yuki and Sasaki, Hiroshi and Kato, Shinpei and Inoue, Koji and Edahiro, Masato and Peres, Martin},
+	month = may,
+	year = {2014},
+	pages = {113--122}
+}
+
+@inproceedings{chen_statistical_2011,
+	title = {Statistical {GPU} power analysis using tree-based methods},
+	doi = {10.1109/IGCC.2011.6008582},
+	abstract = {Graphics Processing Units (GPUs) have emerged as a promising platform for parallel computation. With a large number of scalar processors and abundant memory bandwidth, GPUs provide substantial computation power. While delivering high computation performance, the GPU also consumes high power and needs to be equipped with sufficient power supplies and cooling systems. Therefore, it is essential to institute an efficient mechanism for evaluating and understanding the power consumption requirement when running real applications on high-end GPUs. In this paper, we present a high-level GPU power consumption model using sophisticated tree-based random forest methods which can correlate the power consumption with a set of independent performance variables. This statistical model not only predicts the GPU runtime power consumption accurately, but more importantly, it also provides sufficient insights for understanding the dependence between the GPU runtime power consumption and the individual performance metrics. In order to gain more insights, we use a GPU simulator that can collect more runtime performance metrics than hardware counters. We measure the power consumption of a wide-range of CUDA kernels on an experimental system with GTX 280 GPU as statistical samples for our power analysis. This methodology can certainly be applied to any other CUDA GPU.},
+	author = {Chen, Jianmin and Li, Bin and Zhang, Ying and Peng, Lu and Peir, Jih-Kwon},
+	month = aug,
+	year = {2011},
+	pages = {1--6}
+}
+
+@inproceedings{nagasaka_statistical_2010,
+	address = {Washington, DC, USA},
+	series = {{GREENCOMP} '10},
+	title = {Statistical {Power} {Modeling} of {GPU} {Kernels} {Using} {Performance} {Counters}},
+	isbn = {978-1-4244-7612-1},
+	url = {http://dx.doi.org/10.1109/GREENCOMP.2010.5598315},
+	doi = {10.1109/GREENCOMP.2010.5598315},
+	abstract = {We present a statistical approach for estimating power consumption of GPU kernels. We use the GPU performance counters that are exposed for CUDA applications, and train a linear regression model where performance counters are used as independent variables and power consumption is the dependent variable. For model training and evaluation, we use publicly available CUDA applications, consisting of 49 kernels in the CUDA SDK and the Rodinia benchmark suite. Our regression model achieves highly accurate estimates for many of the tested kernels, where the average error ratio is 4.7\%. However, we also find that it fails to yield accurate estimates for kernels with texture reads because of the lack of performance counters for monitoring texture accesses, resulting in significant underestimation for such kernels.},
+	urldate = {2019-12-09},
+	booktitle = {Proceedings of the {International} {Conference} on {Green} {Computing}},
+	publisher = {IEEE Computer Society},
+	author = {Nagasaka, Hitoshi and Maruyama, Naoya and Nukada, Akira and Endo, Toshio and Matsuoka, Satoshi},
+	year = {2010},
+	pages = {115--122}
+}
+
+@inproceedings{isci_runtime_2003,
+	address = {San Diego, CA, USA},
+	title = {Runtime power monitoring in high-end processors: methodology and empirical data},
+	isbn = {978-0-7695-2043-8},
+	shorttitle = {Runtime power monitoring in high-end processors},
+	url = {http://ieeexplore.ieee.org/document/1253186/},
+	doi = {10.1109/MICRO.2003.1253186},
+	abstract = {With power dissipation becoming an increasingly vexing problem across many classes of computer systems, measuring power dissipation of real, running systems has become crucial for hardware and software system research and design. Live power measurements are imperative for studies requiring execution times too long for simulation, such as thermal analysis. Furthermore, as processors become more complex and include a host of aggressive dynamic power management techniques, per-component estimates of power dissipation have become both more challenging as well as more important.},
+	language = {en},
+	urldate = {2019-12-09},
+	booktitle = {22nd {Digital} {Avionics} {Systems} {Conference}. {Proceedings} ({Cat}. {No}.03CH37449)},
+	publisher = {IEEE Comput. Soc},
+	author = {Isci, C. and Martonosi, M.},
+	year = {2003},
+	pages = {93--104}
+}
+
+@inproceedings{isci_runtime_2003-1,
+	address = {San Diego, CA, USA},
+	title = {Runtime power monitoring in high-end processors: methodology and empirical data},
+	isbn = {978-0-7695-2043-8},
+	shorttitle = {Runtime power monitoring in high-end processors},
+	url = {http://ieeexplore.ieee.org/document/1253186/},
+	doi = {10.1109/MICRO.2003.1253186},
+	abstract = {With power dissipation becoming an increasingly vexing problem across many classes of computer systems, measuring power dissipation of real, running systems has become crucial for hardware and software system research and design. Live power measurements are imperative for studies requiring execution times too long for simulation, such as thermal analysis. Furthermore, as processors become more complex and include a host of aggressive dynamic power management techniques, per-component estimates of power dissipation have become both more challenging as well as more important.},
+	language = {en},
+	urldate = {2019-12-09},
+	booktitle = {22nd {Digital} {Avionics} {Systems} {Conference}. {Proceedings} ({Cat}. {No}.03CH37449)},
+	publisher = {IEEE Comput. Soc},
+	author = {Isci, C. and Martonosi, M.},
+	year = {2003},
+	pages = {93--104}
+}
+
+@article{hong_integrated_nodate,
+	title = {An {Integrated} {GPU} {Power} and {Performance} {Model}},
+	abstract = {GPU architectures are increasingly important in the multi-core era due to their high number of parallel processors. Performance optimization for multi-core processors has been a challenge for programmers. Furthermore, optimizing for power consumption is even more difﬁcult. Unfortunately, as a result of the high number of processors, the power consumption of many-core processors such as GPUs has increased signiﬁcantly.},
+	language = {en},
+	author = {Hong, Sunpyo and Kim, Hyesoon},
+	pages = {10}
+}
+
+@misc{noauthor_polybench/c_nodate,
+	title = {{PolyBench}/{C} -- {Homepage} of {Louis}-{Noël} {Pouchet}},
+	url = {http://web.cs.ucla.edu/~pouchet/software/polybench/},
+	urldate = {2019-12-09}
+}
+
+@article{stratton_parboil:_nodate,
+	title = {Parboil: {A} {Revised} {Benchmark} {Suite} for {Scientiﬁc} and {Commercial} {Throughput} {Computing}},
+	abstract = {The Parboil benchmarks are a set of throughput computing applications useful for studying the performance of throughput computing architecture and compilers. The name comes from the culinary term for a partial cooking process, which represents our belief that useful throughput computing benchmarks must be “cooked”, or preselected to implement a scalable algorithm with ﬁne-grained parallel tasks. But useful benchmarks for this ﬁeld cannot be “fully cooked”, because the architectures and programming models and supporting tools are evolving rapidly enough that static benchmark codes will lose relevance very quickly.},
+	language = {en},
+	author = {Stratton, John A and Rodrigues, Christopher and Sung, I-Jui and Obeid, Nady and Chang, Li-Wen and Anssari, Nasser and Liu, Geng Daniel and Hwu, Wen-mei W},
+	pages = {12}
+}
+
+@inproceedings{sethia_equalizer:_2014,
+	title = {Equalizer: {Dynamic} {Tuning} of {GPU} {Resources} for {Efficient} {Execution}},
+	shorttitle = {Equalizer},
+	doi = {10.1109/MICRO.2014.16},
+	abstract = {GPUs use thousands of threads to provide high performance and efficiency. In general, if one thread of a kernel uses one of the resources (compute, bandwidth, data cache) more heavily, there will be significant contention for that resource due to the large number of identical concurrent threads. This contention will eventually saturate the performance of the kernel due to contention for the bottleneck resource, while at the same time leaving other resources underutilized. To overcome this problem, a runtime system that can tune the hardware to match the characteristics of a kernel can effectively mitigate the imbalance between resource requirements of kernels and the hardware resources present on the GPU. We propose Equalizer, a low overhead hardware runtime system, that dynamically monitors the resource requirements of a kernel and manages the amount of on-chip concurrency, core frequency and memory frequency to adapt the hardware to best match the needs of the running kernel. Equalizer provides efficiency in two modes. Firstly, it can save energy without significant performance degradation by GPUs use thousands of threads to provide high performance and efficiency. In general, if one thread of a kernel uses one of the resources (compute, bandwidth, data cache) more heavily, there will be significant contention for that resource due to the large number of identical concurrent threads. This contention will eventually saturate the performance of the kernel due to contention for the bottleneck resource, while at the same time leaving other resources underutilized. To overcome this problem, a runtime system that can tune the hardware to match the characteristics of a kernel can effectively mitigate the imbalance between resource requirements of kernels and the hardware resources present on the GPU. We propose Equalizer, a low overhead hardware runtime system, that dynamically monitors the resource requirements of a kernel and manages the amount of on-chip concurrency, core frequency and memory frequency to adapt the hardware to best match the needs of the running kernel. Equalizer provides efficiency in two modes. Firstly, it can save energy without significant performance degradation by throttling under-utilized resources. Secondly, it can boost bottleneck resources to reduce contention and provide higher performance without significant energy increase. Across a spectrum of 27 kernels, Equalizer achieves 15\% savings in energy mode and 22\% speedup in performance mode. Throttling under-utilized resources. Secondly, it can boost bottleneck resources to reduce contention and provide higher performance without significant energy increase. Across a spectrum of 27 kernels, Equalizer achieves 15\% savings in energy mode and 22\% speedup in performance mode.},
+	booktitle = {2014 47th {Annual} {IEEE}/{ACM} {International} {Symposium} on {Microarchitecture}},
+	author = {Sethia, Ankit and Mahlke, Scott},
+	month = dec,
+	year = {2014},
+	note = {ISSN: 2379-3155},
+	keywords = {Dynamic Voltage and Frequency Scaling, Equalizer, Equalizers, GPGPUs, GPU resource dynamic tuning, Graphics processing units, Instruction sets, Kernel, Memory management, Pipelines, Resource Utilization, Runtime, Runtime System, bottleneck resource, concurrent threads, core frequency, energy conservation, energy saving, graphics processing units, hardware runtime system, kernel characteristics, kernel resource requirements, memory frequency, on-chip concurrency, resource allocation},
+	pages = {647--658}
+}
+
+@inproceedings{leng_gpuwattch:_2013,
+	address = {New York, NY, USA},
+	series = {{ISCA} '13},
+	title = {{GPUWattch}: {Enabling} {Energy} {Optimizations} in {GPGPUs}},
+	isbn = {978-1-4503-2079-5},
+	shorttitle = {{GPUWattch}},
+	url = {http://doi.acm.org/10.1145/2485922.2485964},
+	doi = {10.1145/2485922.2485964},
+	abstract = {General-purpose GPUs (GPGPUs) are becoming prevalent in mainstream computing, and performance per watt has emerged as a more crucial evaluation metric than peak performance. As such, GPU architects require robust tools that will enable them to quickly explore new ways to optimize GPGPUs for energy efficiency. We propose a new GPGPU power model that is configurable, capable of cycle-level calculations, and carefully validated against real hardware measurements. To achieve configurability, we use a bottom-up methodology and abstract parameters from the microarchitectural components as the model's inputs. We developed a rigorous suite of 80 microbenchmarks that we use to bound any modeling uncertainties and inaccuracies. The power model is comprehensively validated against measurements of two commercially available GPUs, and the measured error is within 9.9\% and 13.4\% for the two target GPUs (GTX 480 and Quadro FX5600). The model also accurately tracks the power consumption trend over time. We integrated the power model with the cycle-level simulator GPGPU-Sim and demonstrate the energy savings by utilizing dynamic voltage and frequency scaling (DVFS) and clock gating. Traditional DVFS reduces GPU energy consumption by 14.4\% by leveraging within-kernel runtime variations. More finer-grained SM cluster-level DVFS improves the energy savings from 6.6\% to 13.6\% for those benchmarks that show clustered execution behavior. We also show that clock gating inactive lanes during divergence reduces dynamic power by 11.2\%.},
+	urldate = {2019-12-09},
+	booktitle = {Proceedings of the 40th {Annual} {International} {Symposium} on {Computer} {Architecture}},
+	publisher = {ACM},
+	author = {Leng, Jingwen and Hetherington, Tayler and ElTantawy, Ahmed and Gilani, Syed and Kim, Nam Sung and Aamodt, Tor M. and Reddi, Vijay Janapa},
+	year = {2013},
+	note = {event-place: Tel-Aviv, Israel},
+	keywords = {CUDA, GPU architecture, energy, power, power estimation},
+	pages = {487--498}
+}
+
+@inproceedings{lee_dynamic_2014,
+	address = {New York, NY, USA},
+	series = {{ISLPED} '14},
+	title = {Dynamic {Thermal} {Management} for {FinFET}-based {Circuits} {Exploiting} the {Temperature} {Effect} {Inversion} {Phenomenon}},
+	isbn = {978-1-4503-2975-0},
+	url = {http://doi.acm.org/10.1145/2627369.2627608},
+	doi = {10.1145/2627369.2627608},
+	abstract = {Due to limits on the availability of the energy source in many mobile user platforms (ranging from handheld devices to portable electronics to deeply embedded devices) and concerns about how much heat can effectively be removed from chips, minimizing the power consumption has become a primary driver for system-on-chip designers. Because of their superb characteristics, FinFETs have emerged as a promising replacement for planar CMOS devices in sub-20nm CMOS technology nodes. However, based on extensive simulations, we have observed that the delay vs. temperature characteristics of FinFET-based circuits are fundamentally different from that of the conventional bulk CMOS circuits, i.e., the delay of a FinFET circuit decreases with increasing temperature even in the super-threshold supply voltage regime. Unfortunately, the leakage power dissipation of the FinFET-based circuits increases exponentially with the temperature. These two trends give rise to a tradeoff between delay and leakage power as a function of the chip temperature, and hence, lead to the definition of an optimum chip temperature operating point (i.e., one that balances concerns about the circuit speed and power efficiency.) This paper presents the results of our investigations into the aforesaid temperature effect inversion (TEI) and proposes a novel dynamic thermal management (DTM) algorithm, which exploits this phenomenon to minimize the energy consumption of FinFET-based circuits without any appreciable performance penalty. Experimental results demonstrate 40\% energy saving (with no performance penalty) can be achieved by the proposed TEI-aware DTM approach compared to the best-in-class DTMs that are unaware of this phenomenon.},
+	urldate = {2019-12-09},
+	booktitle = {Proceedings of the 2014 {International} {Symposium} on {Low} {Power} {Electronics} and {Design}},
+	publisher = {ACM},
+	author = {Lee, Woojoo and Wang, Yanzhi and Cui, Tiansong and Nazarian, Shahin and Pedram, Massoud},
+	year = {2014},
+	note = {event-place: La Jolla, California, USA},
+	keywords = {finfet, low-power designs, thermal mangement},
+	pages = {105--110}
+}
+
+@inproceedings{che_rodinia:_2009,
+	address = {Austin, TX, USA},
+	title = {Rodinia: {A} benchmark suite for heterogeneous computing},
+	isbn = {978-1-4244-5156-2},
+	shorttitle = {Rodinia},
+	url = {http://ieeexplore.ieee.org/document/5306797/},
+	doi = {10.1109/IISWC.2009.5306797},
+	abstract = {This paper presents and characterizes Rodinia, a benchmark suite for heterogeneous computing. To help architects study emerging platforms such as GPUs (Graphics Processing Units), Rodinia includes applications and kernels which target multi-core CPU and GPU platforms. The choice of applications is inspired by Berkeley’s dwarf taxonomy. Our characterization shows that the Rodinia benchmarks cover a wide range of parallel communication patterns, synchronization techniques and power consumption, and has led to some important architectural insight, such as the growing importance of memory-bandwidth limitations and the consequent importance of data layout.},
+	language = {en},
+	urldate = {2019-12-09},
+	booktitle = {2009 {IEEE} {International} {Symposium} on {Workload} {Characterization} ({IISWC})},
+	publisher = {IEEE},
+	author = {Che, Shuai and Boyer, Michael and Meng, Jiayuan and Tarjan, David and Sheaffer, Jeremy W. and Lee, Sang-Ha and Skadron, Kevin},
+	month = oct,
+	year = {2009},
+	pages = {44--54}
+}
+
+@inproceedings{abe_power_2012,
+	address = {Berkeley, CA, USA},
+	series = {{HotPower}'12},
+	title = {Power and {Performance} {Analysis} of {GPU}-accelerated {Systems}},
+	url = {http://dl.acm.org/citation.cfm?id=2387869.2387879},
+	abstract = {Graphics processing units (GPUs) provide significant improvements in performance and performance-per-watt as compared to traditional multicore CPUs. This energy-efficiency of GPUs has facilitated the use of GPUs in many application domains. Albeit energy efficient, GPUs consume non-trivial power independently of CPUs. Therefore, we need to analyze the power and performance characteristic of GPUs and their causal relation with CPUs in order to reduce the total energy consumption of the system while sustaining high performance. In this paper, we provide a power and performance analysis of GPU-accelerated systems for better understandings of these implications. Our analysis on a real system discloses that system energy can be reduced by 28\% retaining a decrease in performance within 1\% by controlling the voltage and frequency levels of GPUs. We show that energy savings can be achieved when GPU core and memory clock frequencies are appropriately scaled considering the workload characteristics. Another interesting finding is that voltage and frequency scaling of CPUs is trivial for total system energy reduction, and even should not be applied in state-of-the-art GPU-accelerated systems. We believe that these findings are useful to develop dynamic voltage and frequency scaling (DVFS) algorithms for GPU-accelerated systems.},
+	urldate = {2019-12-09},
+	booktitle = {Proceedings of the 2012 {USENIX} {Conference} on {Power}-{Aware} {Computing} and {Systems}},
+	publisher = {USENIX Association},
+	author = {Abe, Yuki and Sasaki, Hiroshi and Peres, Martin and Inoue, Koji and Murakami, Kazuaki and Kato, Shinpei},
+	year = {2012},
+	note = {event-place: Hollywood, CA},
+	pages = {10--10}
+}
+
+@inproceedings{mei_measurement_2013,
+	title = {A measurement study of {GPU} {DVFS} on energy conservation},
+	doi = {10.1145/2525526.2525852},
+	abstract = {Nowadays, GPUs are widely used to accelerate many high performance computing applications. Energy conservation of such computing systems has become an important research topic. Dynamic voltage/frequency scaling (DVFS) is proved to be an appealing method for saving energy for traditional computing centers. However, there is still a lack of firsthand study on the effectiveness of GPU DVFS. This paper presents a thorough measurement study that aims to explore how GPU DVFS affects the system energy consumption. We conduct experiments on a real GPU platform with 37 benchmark applications. Our results show that GPU voltage/frequency scaling is an effective approach to conserving energy. For example, by scaling down the GPU core voltage and frequency, we have achieved an average of 19.28\% energy reduction compared with the default setting, while giving up no more than 4\% of performance. For all tested GPU applications, core voltage scaling is significantly effective to reduce system energy consumption. Meanwhile the effects of scaling core frequency and memory frequency depend on the characteristics of GPU applications.},
+	author = {Mei, Xinxin and Yung, Ling and Zhao, Kaiyong and Chu, Xiaowen},
+	month = nov,
+	year = {2013}
+}
+
+@article{guerreiro_gpu_2019,
+	title = {{GPU} {Static} {Modeling} {Using} {PTX} and {Deep} {Structured} {Learning}},
+	volume = {7},
+	issn = {2169-3536},
+	doi = {10.1109/ACCESS.2019.2951218},
+	abstract = {In the quest for exascale computing, energy-efficiency is a fundamental goal in high-performance computing systems, typically achieved via dynamic voltage and frequency scaling (DVFS). However, this type of mechanism relies on having accurate methods of predicting the performance and power/energy consumption of such systems. Unlike previous works in the literature, this research focuses on creating novel GPU predictive models that do not require run-time information from the applications. The proposed models, implemented using recurrent neural networks, take into account the sequence of GPU assembly instructions (PTX) and can accurately predict changes in the execution time, power and energy consumption of applications when the frequencies of different GPU domains (core and memory) are scaled. Validated with 24 applications on GPUs from different NVIDIA microarchitectures (Turing, Volta, Pascal and Maxwell), the proposed models attain a significant accuracy. Particularly, the obtained power consumption scaling model provides an average error rate of 7.9\% (Tesla T4), 6.7\% (Titan V), 5.9\% (Titan Xp) and 5.4\% (GTX Titan X), which is comparable to state-of-the-art run-time counter-based models. When using the models to select the minimum-energy frequency configuration, significant energy savings can be attained: 8.0\% (Tesla T4), 6.0\% (Titan V), 29.0\% (Titan Xp) and 11.5\% (GTX Titan X).},
+	journal = {IEEE Access},
+	author = {Guerreiro, João and Ilic, Aleksandar and Roma, Nuno and Tomás, Pedro},
+	year = {2019},
+	keywords = {Benchmark testing, DVFS, Energy consumption, GPU, GPU assembly instructions, GPU predictive models, GPU static modeling, GTX Titan X, Graphics processing units, Kernel, NVIDIA microarchitectures, PTX, Performance evaluation, Power demand, Predictive models, Tesla T4, Titan V, Titan Xp, deep structured learning, dynamic voltage and frequency scaling, electronic engineering computing, energy conservation, energy consumption, energy savings, energy-efficiency, graphics processing units, high-performance computing systems, learning (artificial intelligence), microprocessor chips, minimum-energy frequency configuration, modeling, parallel processing, power consumption, recurrent neural nets, recurrent neural networks, run-time counter-based models, run-time information, scaling-factors},
+	pages = {159150--159161}
+}
+
+@inproceedings{ge_effects_2013,
+	title = {Effects of {Dynamic} {Voltage} and {Frequency} {Scaling} on a {K}20 {GPU}},
+	doi = {10.1109/ICPP.2013.98},
+	abstract = {Improving energy efficiency is an ongoing challenge in HPC because of the ever-increasing need for performance coupled with power and economic constraints. Though GPU-accelerated heterogeneous computing systems are capable of delivering impressive performance, it is necessary to explore all available power-aware technologies to meet the inevitable energy efficiency challenge. In this paper, we experimentally study the impacts of DVFS on application performance and energy efficiency for GPU computing and compare them with those of DVFS for CPU computing. Based on a power-aware heterogeneous system that includes dual Intel Sandy Bridge CPUs and the latest Nvidia K20c Kepler GPU, the study provides numerous new insights, general trends and exceptions of DVFS for GPU computing. In general, the effects of DVFS on a GPU differ from those of DVFS on a CPU. For example, on a GPU running compute-bound high-performance and high-throughput workloads, the system performance and the power consumption are approximately proportional to the GPU frequency. Hence, with a permissible power limit, increasing the GPU frequency leads to better performance without incurring a noticeable increase in energy. This paper further provides detailed analytical explanations of the causes of the observed trends and exceptions. The findings presented in this paper have the potential to impact future CPU and GPU architectures to achieve better energy efficiency and point out directions for designing effective DVFS schedulers for heterogeneous systems.},
+	author = {Ge, Rong and Vogt, Ryan and Majumder, AKM Jahangir and Alam, Mohammad  Arif Ul and Burtscher, Martin and Zong, Ziliang},
+	month = oct,
+	year = {2013},
+	pages = {826--833}
+}
+
+@inproceedings{jiao_power_2010,
+	title = {Power and {Performance} {Characterization} of {Computational} {Kernels} on the {GPU}},
+	doi = {10.1109/GreenCom-CPSCom.2010.143},
+	abstract = {Nowadays Graphic Processing Units (GPU) are gaining increasing popularity in high performance computing (HPC). While modern GPUs can offer much more computational power than CPUs, they also consume much more power. Energy efficiency is one of the most important factors that will affect a broader adoption of GPUs in HPC. In this paper, we systematically characterize the power and energy efficiency of GPU computing. Specifically, using three different applications with various degrees of compute and memory intensiveness, we investigate the correlation between power consumption and different computational patterns under various voltage and frequency levels. Our study revealed that energy saving mechanisms on GPUs behave considerably different than CPUs. The characterization results also suggest possible ways to improve the 'greenness' of GPU computing.},
+	booktitle = {2010 {IEEE}/{ACM} {Int}'l {Conference} on {Green} {Computing} and {Communications} {Int}'l {Conference} on {Cyber}, {Physical} and {Social} {Computing}},
+	author = {Jiao, Y. and Lin, H. and Balaji, P. and Feng, W.},
+	month = dec,
+	year = {2010},
+	note = {ISSN: null},
+	keywords = {CPU, Clocks, DVFS, Energy-Efficient Computing, GPU, GPUs, Graphics processing unit, Kernel, Memory management, Performance evaluation, Power demand, computational power, computer graphic equipment, coprocessors, energy conservation, energy efficiency, energy saving mechanism, graphic processing unit, high performance computing, low-power electronics, mainframes, power consumption},
+	pages = {221--228}
+}
+
+@misc{noauthor_opencl_2013,
+	title = {{OpenCL} - {The} open standard for parallel programming of heterogeneous systems},
+	url = {https://www.khronos.org/opencl/},
+	abstract = {OpenCL™ (Open Computing Language) is the open, royalty-free standard for cross-platform, parallel programming of diverse processors found in personal computers, servers, mobile devices and embedded platforms. OpenCL greatly improves the…},
+	language = {en},
+	urldate = {2019-12-08},
+	journal = {The Khronos Group},
+	month = jul,
+	year = {2013}
+}
+
+@misc{noauthor_cuda_2017,
+	title = {{CUDA} {Zone}},
+	url = {https://developer.nvidia.com/cuda-zone},
+	abstract = {CUDA® is a parallel computing platform and programming model developed by NVIDIA for general computing on graphical processing units (GPUs). With CUDA, developers are able to dramatically speed up computing applications by harnessing the power of GPUs.},
+	language = {en},
+	urldate = {2019-12-08},
+	journal = {NVIDIA Developer},
+	month = jul,
+	year = {2017}
+}
+
+@misc{noauthor_time_nodate,
+	title = {Time and {Energy} {Efficient} {DVS} {Scheduling} for {Real}-{Time} {Pinwheel} {Tasks} {\textbar} {Elsevier} {Enhanced} {Reader}},
+	url = {https://reader.elsevier.com/reader/sd/pii/S1665642314716633?token=A320D8E6AEACD94E4D0F78E52A78812476B17F7A403EEC03DC8E707CDC594C9935381917052C84FC19C8BABE752351B8},
+	language = {en},
+	urldate = {2019-12-04},
+	doi = {10.1016/S1665-6423(14)71663-3}
+}
+
+@phdthesis{boyer_improving_2013,
+	title = {Improving {Resource} {Utilization} in {Heterogeneous} {CPU}-{GPU} {Systems}},
+	copyright = {All rights reserved (no additional license for public reuse)},
+	url = {https://libraetd.lib.virginia.edu/public_view/z890rt45j},
+	abstract = {Graphics processing units (GPUs) have attracted enormous interest over the past decade due to substantial increases in both performance and programmability. Programmers can potentially leverage GPUs for substantial performance gains, but at the cost of significant software engineering effort. In practice, most GPU applications do not effectively utilize all of the available resources in a system: they either fail to use use a resource at all or use a resource to less than its full potential. This underutilization can hurt both performance and energy efficiency. In this dissertation, we address the underutilization of resources in heterogeneous CPU-GPU systems in three different contexts.
+
+First, we address the underutilization of a single GPU by reducing CPU-GPU interaction to improve performance. We use as a case study a computationally-intensive video-tracking application from systems biology. Because of the high cost of CPU-GPU coordination, our initial, straightforward attempts to accelerate this application failed to effectively utilize the GPU. By leveraging some non-obvious optimization strategies, we significantly decreased the amount of CPU-GPU interaction and improved the performance of the GPU implementation by 26x relative to the best CPU implementation. Based on the lessons we learned, we present general guidelines for optimizing GPU applications as well as recommendations for system-level changes that would simplify the development of high-performance GPU applications.
+
+Next, we address underutilization at the system level by using load balancing to improve performance. We propose a dynamic scheduling algorithm that automatically and efficiently divides the execution of a data-parallel kernel across multiple, possibly heterogeneous GPUs. We show that our scheduler can nearly match the performance of an unrealistic static scheduler when device performance is fixed, and can provide better performance when device performance varies.
+
+Finally, we address underutilization within a GPU by using frequency scaling to improve energy efficiency. We propose a novel algorithm for predicting the energy-optimal GPU clock frequencies for an arbitrary kernel. Using power measurements from real systems, we demonstrate that our algorithm improves significantly on the state of the art across multiple generations of GPUs. We also propose and evaluate techniques for decreasing the CPU's energy consumption during GPU computation.
+
+Many of the techniques presented in this dissertation can be used to improve the performance and energy efficiency of GPU applications with no programmer effort or software modifications required. As the diversity of available hardware systems continues to increase, automatic techniques such as these will become critical for software to fully realize the benefits of future hardware improvements.},
+	language = {en},
+	urldate = {2019-12-04},
+	school = {University of Virginia},
+	author = {Boyer, Michael},
+	collaborator = {Skadron, Kevin},
+	month = apr,
+	year = {2013},
+	doi = {10.18130/V3TJ7X}
+}
+
 @misc{noauthor_gpgpu-sim/gpgpu-sim_distribution_2019,
 	title = {gpgpu-sim/gpgpu-sim\_distribution},
 	url = {https://github.com/gpgpu-sim/gpgpu-sim_distribution},
@@ -228,7 +545,6 @@
 	year = {2019},
 	note = {original-date: 2016-03-18T00:24:29Z}
 }
-
 @inproceedings{esmaeilzadeh_dark_2011,
 	title = {Dark silicon and the end of multicore scaling},
 	abstract = {Since 2005, processor designers have increased core counts to exploit Moore's Law scaling, rather than focusing on single-core performance. The failure of Dennard scaling, to which the shift to multicore parts is partially a response, may soon limit multicore scaling just as single-core scaling has been curtailed. This paper models multicore scaling limits by combining device scaling, single-core scaling, and multicore scaling to measure the speedup potential for a set of parallel workloads for the next five technology generations. For device scaling, we use both the ITRS projections and a set of more conservative device scaling parameters. To model single-core scaling, we combine measurements from over 150 processors to derive Pareto-optimal frontiers for area/performance and power/performance. Finally, to model multicore scaling, we build a detailed performance model of upper-bound performance and lower-bound core power. The multicore designs we study include single-threaded CPU-like and massively threaded GPU-like multicore chip organizations with symmetric, asymmetric, dynamic, and composed topologies. The study shows that regardless of chip organization and topology, multicore scaling is power limited to a degree not widely appreciated by the computing community. Even at 22 nm (just one year from now), 21\% of a fixed-size chip must be powered off, and at 8 nm, this number grows to more than 50\%. Through 2024, only 7.9× average speedup is possible across commonly used parallel workloads, leaving a nearly 24-fold gap from a target of doubled performance per generation.},
@@ -517,6 +833,7 @@
 	keywords = {16-bit floating-point data representations, 32-bit FP data, CNN, Convolution, GPU, GPU convolution algorithm, GPU operations, Graphics processing units, NVIDIA Tensor Cores, NVIDIA volta GPU, Neural network, Neural networks, Performance evaluation, Three-dimensional displays, Training, Two dimensional displays, convolution, convolution parameter configurations, convolution parameters, convolutional neural nets, convolutional neural networks, cuDNN, cuDNN convolution algorithms, data type representations, deep learning, deep learning frameworks, graphics processing units, image recognition, inference, learning (artificial intelligence), natural language processing, performance evaluation, reduced computational cost, volta},
 	pages = {70461--70473}
 }
+
 @inproceedings{dong_dnnmark:_2017,
 	address = {New York, NY, USA},
 	series = {{GPGPU}-10},
@@ -723,7 +1040,6 @@ applications.},
 	keywords = {CPU-GPU hybrid clusters, Energy consumption, GPU energy consumption, GPU scaling interval, GPU-accelerated applications, Graphics processing units, Power demand, Runtime, Scheduling algorithms, Servers, data centers, dynamic voltage and frequency scaling, energy efficient real-time task scheduling, graphics processing units, heuristic scheduling algorithms, multiprocessing systems, performance evaluation, power aware computing, processor scheduling, real-world power measurement traces, task execution time, total energy consumption reduction, upper bound},
 	pages = {1--9}
 }
-
 @article{calore_evaluation_2017,
 	title = {Evaluation of {DVFS} techniques on modern {HPC} processors and accelerators for energy-aware applications},
 	volume = {29},
