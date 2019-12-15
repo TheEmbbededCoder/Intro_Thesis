@@ -1,4 +1,31 @@
 
+@inproceedings{jiao_assessment_2017,
+	title = {An assessment of vulnerability of hardware neural networks to dynamic voltage and temperature variations},
+	doi = {10.1109/ICCAD.2017.8203882},
+	abstract = {As a problem solving method, neural networks have shown broad applicability from medical applications, speech recognition, and natural language processing. This success has even led to implementation of neural network algorithms into hardware. In this paper, we explore two questions: (a) to what extent microelectronic variations affects the quality of results by neural networks; and (b) if the answer to first question represents an opportunity to optimize the implementation of neural network algorithms. Regarding first question, variations are now increasingly common in aggressive process nodes and typically manifest as an increased frequency of timing errors. Combating variations - due to process and/or operating conditions - usually results in increased guardbands in circuit and architectural design, thus reducing the gains from process technology advances. Given the inherent resilience of neural networks due to adaptation of their learning parameters, one would expect the quality of results produced by neural networks to be relatively insensitive to the rising timing error rates caused by increased variations. On the contrary, using two frequently used neural networks (MLP and CNN), our results show that variations can significantly affect the inference accuracy. This paper outlines our assessment methodology and use of a cross-layer evaluation approach that extracts hardware-level errors from twenty different operating conditions and then inject such errors back to the software layer in an attempt to answer the second question posed above.},
+	booktitle = {2017 {IEEE}/{ACM} {International} {Conference} on {Computer}-{Aided} {Design} ({ICCAD})},
+	author = {Jiao, Xun and Luo, Mulong and Lin, Jeng-Hau and Gupta, Rajesh K.},
+	month = nov,
+	year = {2017},
+	note = {ISSN: 1558-2434},
+	keywords = {Adders, Biological neural networks, CNN, Hardware, Logic gates, MLP, Resilience, Timing, dynamic voltage, hardware neural networks, learning (artificial intelligence), medical applications, multilayer perceptrons, natural language processing, neural nets, neural network algorithms, problem solving, speech recognition, temperature variations},
+	pages = {945--950}
+}
+
+@inproceedings{thomas_core_2016,
+	title = {Core tunneling: {Variation}-aware voltage noise mitigation in {GPUs}},
+	shorttitle = {Core tunneling},
+	doi = {10.1109/HPCA.2016.7446061},
+	abstract = {Voltage noise and manufacturing process variation represent significant reliability challenges for modern microprocessors. Voltage noise is caused by rapid changes in processor activity that can lead to timing violations and errors. Process variation is caused by manufacturing challenges in low-nanometer technologies and can lead to significant heterogeneity in performance and reliability across the chip. To ensure correct execution under worst-case conditions, chip designers generally add operating margins that are often unnecessarily conservative for most use cases, which results in wasted energy. This paper investigates the combined effects of process variation and voltage noise on modern GPU architectures. A distributed power delivery and process variation model at functional unit granularity was developed and used to simulate supply voltage behavior in a multicore GPU system. We observed that, just like in CPUs, large changes in power demand can lead to significant voltage droops. We also note that process variation makes some cores much more vulnerable to noise than others in the same GPU. Therefore, protecting the chip against large voltage droops by using fixed and uniform voltage guardbands is costly and inefficient. This paper presents core tunneling, a variation-aware solution for dynamically reducing voltage margins. The system relies on hardware critical path monitors to detect voltage noise conditions and quickly reacts by clock-gating vulnerable cores to prevent timing violations. This allows a substantial reduction in voltage margins. Since clock gating is enabled infrequently and only on the most vulnerable cores, the performance impact of core tunneling is very low. On average, core tunneling reduces energy consumption by 15\%.},
+	booktitle = {2016 {IEEE} {International} {Symposium} on {High} {Performance} {Computer} {Architecture} ({HPCA})},
+	author = {Thomas, Renji and Barber, Kristin and Sedaghati, Naser and Zhou, Li and Teodorescu, Radu},
+	month = mar,
+	year = {2016},
+	note = {ISSN: 2378-203X},
+	keywords = {Delays, GPU, Graphics processing units, Histograms, Kernel, Monitoring, Power demand, Tunneling, clock gating, core tunneling, distributed power delivery, energy conservation, energy consumption reduction, graphics processing unit, graphics processing units, low-nanometer technologies, microprocessors, power aware computing, process variation model, variation-aware voltage noise mitigation, voltage droops, voltage guardbands, voltage margin reduction},
+	pages = {151--162}
+}
+
 @inproceedings{isci_runtime_2003,
 	address = {San Diego, CA, USA},
 	title = {Runtime power monitoring in high-end processors: methodology and empirical data},
@@ -503,7 +530,6 @@ Many of the techniques presented in this dissertation can be used to improve the
 	author = {{S. Hong}},
 	year = {2012}
 }
-
 @article{gonzalez_supply_1997,
 	title = {Supply and threshold voltage scaling for low power {CMOS}},
 	volume = {32},
@@ -536,6 +562,7 @@ Many of the techniques presented in this dissertation can be used to improve the
 	year = {2019},
 	note = {original-date: 2018-07-17T15:49:55Z}
 }
+
 @misc{noauthor_radeonopencompute/roc-smi_2019,
 	title = {{RadeonOpenCompute}/{ROC}-smi},
 	url = {https://github.com/RadeonOpenCompute/ROC-smi},
@@ -996,7 +1023,6 @@ Many of the techniques presented in this dissertation can be used to improve the
 	keywords = {CPN, Classification algorithms, DVFS, Embedded System, Energy consumption, Linux, Linux operating system, Low Power Software Design, PXA270 development board, Prediction algorithms, Radiation detectors, Time frequency analysis, Training, Vectors, computation time prediction, counter propagation networks, electronic engineering computing, learning directed dynamic voltage and frequency scaling, mathematical analysis, mathematical models, microprocessor chips, neural network, power aware computing, power consumption, statistical analysis, statistics information},
 	pages = {1023--1029}
 }
-
 @article{nunez-yanez_energy_2019,
 	title = {Energy {Proportional} {Neural} {Network} {Inference} with {Adaptive} {Voltage} and {Frequency} {Scaling}},
 	volume = {68},
@@ -1026,6 +1052,7 @@ Many of the techniques presented in this dissertation can be used to improve the
 	keywords = {Benchmark testing, Clocks, Correlation, DVFS, Energy consumption, Graphics processing units, Graphics processors, Quality of service, SoC, System-on-chip, dynamic voltage scaling, embedded GPU, energy-aware systems, frequency scaling, graphics processing unit, graphics processing units, hardware/software interfaces, low-power design, mobile device, mobile system-on-chips, operating clock frequency, power aware computing, processor power consumption, quality of service, system-on-chip},
 	pages = {66--69}
 }
+
 @inproceedings{ahmad_green_2015,
 	title = {Green smartphone {GPUs}: {Optimizing} energy consumption using {GPUFreq} scaling governors},
 	shorttitle = {Green smartphone {GPUs}},

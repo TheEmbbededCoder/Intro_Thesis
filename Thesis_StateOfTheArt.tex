@@ -8,7 +8,7 @@
 %                                                                      %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\chapter{State of the Art}
+\chapter{Background}
 \label{chapter:stateoftheart}
 
 
@@ -38,7 +38,7 @@ The AMD Graphics Core Next (GCN) \cite{amd_radeons_nodate}  architecture include
 \begin{figure}[!htb]
   \begin{subfigmatrix}{2}
     \subfigure[Chip block diagram, example with 4 CEs]{\includegraphics[width=0.7\linewidth]{Figures/StateArt/Vega10_microarchitecture.png}}
-    \subfigure[NCU]{\includegraphics[width=0.29\linewidth]{Figures/StateArt/NCU.png}}
+    \subfigure[NCU]{\includegraphics[width=0.24\linewidth]{Figures/StateArt/NCU.png}}
   \end{subfigmatrix}
   \caption{AMD's Graphics Core NExt logical Organization.}
   \label{fig:Vega10arch}
@@ -139,39 +139,29 @@ In general, modern GPU boards have independent control over two pairs of frequen
 
 The clock frequency is an independent control variable, and its change is reflected directly on the performed achieved by the GPU. An increase in the clock frequency of the core results in an improvement of the CU execution speed, while the same change in the memory frequency will increase the DRAM I/O throughput \cite{mei_survey_2016}. The voltage level of each domain is dependent on the clock frequency and is computed based on tests performed by the manufacturer that ensure the correct operation of the circuit, independently of the workload.
 
-Both AMD and NVIDIA have on their products the concept of performance levels, that is, a set of pairs of frequency and voltage that can be applied to the many components of the GPU. These vary from low power and performance levels to high performance and high power ones. The idea of having multiple performance levels is to be able to always be at the best point of operation.  In the case of AMD, the GPU core has eight possible pairs, table \ref{tab:gpucorelevels} shows the reference values of frequency and voltage for each of the core performance levels, while the GPU memory has only four, table \ref{tab:gpumemlevels}. Through the use of software like ROC-SMI \cite{noauthor_radeonopencompute/roc-smi_2019} the user can input the desired combination of values for each level, allowing for an almost continuously selection of values for the frequency and voltage within the specifications range. For example, on the Vega 10 Frontier Edition used on the experimental work of this thesis, the GPU core frequency can be set between 852 and 1980 MHz and the GPU memory frequency between 167 and 1500 MHz. In turn, the voltage can be set between the 800 and 1250 mV. As stated before, the primary benefit of AMD over NVIDIA's solution is that this manufacturer allows for the override of the automatic computation of the GPU voltage. This difference is of significant importance since it allows finer control of the DVFS values and a more interesting possibility of exploration of the voltage level.
+Both AMD and NVIDIA have on their products the concept of performance levels, that is, a set of pairs of frequency and voltage that can be applied to the many components of the GPU. These vary from low power and performance levels to high performance and high power ones. The idea of having multiple performance levels is to be able to always be at the best point of operation.  In the case of AMD, the GPU core has eight possible pairs, while the memory has only four. Table \ref{tab:gpulevels} shows the reference values for frequency and voltage for each of the core and memory performance levels. Through the use of software like ROC-SMI \cite{noauthor_radeonopencompute/roc-smi_2019} the user can input the desired combination of values for each level, allowing for an almost continuously selection of values for the frequency and voltage within the specifications range. For example, on the Vega 10 Frontier Edition used on the experimental work of this thesis, the GPU core frequency can be set between 852 and 1980 MHz and the GPU memory frequency between 167 and 1500 MHz. In turn, the voltage can be set between the 800 and 1250 mV. As stated before, the primary benefit of AMD over NVIDIA's solution is that this manufacturer allows for the override of the automatic computation of the GPU voltage. This difference is of significant importance since it allows finer control of the DVFS values and a more interesting possibility of exploration of the voltage level.
+
 
 \begin{table}[!htb]
 \renewcommand{\arraystretch}{1.2} % more space between rows
 \centering
-\begin{tabular}{ccc}
-\textbf{Level} & \textbf{Frequency {[}MHz{]}} & \textbf{Voltage {[}mV{]}} \\ \hline
-0              & 852                          & 800                       \\
-1              & 991                          & 900                       \\
-2              & 1138                         & 950                       \\
-3              & 1269                         & 1000                      \\
-4              & 1348                         & 1050                      \\
-5              & 1440                         & 1100                      \\
-6              & 1528                         & 1150                      \\
-7              & 1600                         & 1200                      \\ \hline
+\begin{tabular}{ccclccc}
+\multicolumn{3}{c}{\textbf{Core}}                                         & \multicolumn{1}{c}{\textbf{}} & \multicolumn{3}{c}{\textbf{Memory}}                                             \\
+\textbf{Level} & \textbf{Frequency {[}MHz{]}} & \textbf{Voltage {[}mV{]}} &                               & \textbf{Level}       & \textbf{Frequency {[}MHz{]}} & \textbf{Voltage {[}mV{]}} \\ \cline{1-3} \cline{5-7} 
+0              & 852                          & 800                       &                               & 0                    & 167                          & 800                       \\
+1              & 991                          & 900                       &                               & 1                    & 500                          & 900                       \\
+2              & 1138                         & 950                       &                               & 2                    & 800                          & 950                       \\
+3              & 1269                         & 1000                      &                               & 3                    & 945                          & 1000                      \\ \cline{5-7} 
+4              & 1348                         & 1050                      &                               & \multicolumn{1}{l}{} & \multicolumn{1}{l}{}         & \multicolumn{1}{l}{}      \\
+5              & 1440                         & 1100                      &                               & \multicolumn{1}{l}{} & \multicolumn{1}{l}{}         & \multicolumn{1}{l}{}      \\
+6              & 1528                         & 1150                      &                               & \multicolumn{1}{l}{} & \multicolumn{1}{l}{}         & \multicolumn{1}{l}{}      \\
+7              & 1600                         & 1200                      &                               & \multicolumn{1}{l}{} & \multicolumn{1}{l}{}         & \multicolumn{1}{l}{}      \\ \cline{1-3}
 \end{tabular}
-\caption{GPU Core Levels of Frequency and Voltage of AMD Vega 10 Frontier Edition}
-\label{tab:gpucorelevels}
+\caption{GPU Core and Memory Levels of Frequency and Voltage - AMD Vega 10 Frontier Edition}
+\label{tab:gpulevels}
 \end{table}
 
-\begin{table}[!htb]
-\renewcommand{\arraystretch}{1.2} % more space between rows
-\centering
-\begin{tabular}{ccc}
-\textbf{Level} & \textbf{Frequency {[}MHz{]}} & \textbf{Voltage {[}mV{]}} \\ \hline
-0              & 167                          & 800                       \\
-1              & 500                          & 900                       \\
-2              & 800                          & 950                       \\
-3              & 945                          & 1000                      \\ \hline
-\end{tabular}
-\caption{GPU Memory Levels of Frequency and Voltage of AMD Vega 10 Frontier Edition}
-\label{tab:gpumemlevels}
-\end{table}
+
 
 \subsection{Control Mechanism}
 
@@ -193,7 +183,7 @@ A \textit{governer} is a set of parameters such as frequency and voltage tables,
 
 \begin{figure}[!htb]
   \centering
-  \includegraphics[width=0.5\textwidth]{Figures/StateArt/DVFSprogram.png}
+  \includegraphics[width=\textwidth]{Figures/StateArt/DVFSprogram.png}
   \caption[Controller]{DVFS procedure.}
   \label{fig:DVFSprocedure}
 \end{figure}
@@ -343,7 +333,7 @@ The empirical power modeling of processor started with CPU modeling, back on the
     P = P_0 + P_1 * r_1 +  P_2 * r_2 + ... + P_n * r_n
 \end{equation}
 
-Hong and Kim first applied this modeling method for the GPUs \cite{hong_integrated_nodate}. The authors started by creating an examination mechanism that analysis the PTX code (assembly instructions of the NVIDIA GPUs) to estimate, based on the number of instructions and pipeline analysis, the utilization rate of each of the GPU separated units. To find out the \textit{P} values of each of the GPU separated units, a suite of benchmarks was designed to give the minimum error between the computed and measured power. Given all the \textit{P} values to the model of Equation \ref{eq:empiracalPower} and getting the utilization rate from the examination mechanism, they were able to achieve a 2.5\% power prediction error for micro-benchmarks and 9.2\% for integrated GPGPU kernels.
+Hong and Kim first applied this modeling method for the GPUs \cite{hong_integrated_2010}. The authors started by creating an examination mechanism that analysis the PTX code (assembly instructions of the NVIDIA GPUs) to estimate, based on the number of instructions and pipeline analysis, the utilization rate of each of the GPU separated units. To find out the \textit{P} values of each of the GPU separated units, a suite of benchmarks was designed to give the minimum error between the computed and measured power. Given all the \textit{P} values to the model of Equation \ref{eq:empiracalPower} and getting the utilization rate from the examination mechanism, they were able to achieve a 2.5\% power prediction error for micro-benchmarks and 9.2\% for integrated GPGPU kernels.
 
 Based on Hong and Kim's work and on the GPGPUSim GPU simulator, Leng \textit{et al.} created the before mentioned GPUWattch simulator \cite{noauthor_gpu_nodate} \cite{leng_gpuwattch:_2013}. This simulator uses empirical methods to estimate the runtime GPU power for different frequency and voltage settings. 
 
@@ -384,13 +374,31 @@ The state of the art of modeling techniques for power and performance use simila
 
 \section{Related Work}
 
-The presented state of the art on DVFS exploration and characterization and modeling methodologies explored the benefits of using mainly frequency scaling in order to optimize the performance and reduce the power consumption on GPUs. However, the significant frequency and voltage guardbands used by manufacturers to ensure the correct functioning of the devices, across all possible working conditions, appear to be extra beneficial space that is waiting to be explored.  In that regard, more recent studies have been playing with frequency and voltage scaling beyond the conventional DVFS limits. The studies presented in the section show that working in this unexplored space can be profitable when certain conditions are present.
+The presented state of the art on DVFS exploration, characterization and modeling methodologies explored the benefits of using mainly frequency scaling in order to optimize the performance and reduce the power consumption on GPUs. However, the significant frequency and voltage guardbands used by manufacturers, to ensure the correct functioning of the devices across all possible working conditions, appear to be an extra beneficial space that is waiting to be explored.  In that regard, more recent studies have been playing not only with frequency, but also with voltage scaling beyond the conventional DVFS limits. The studies presented in the section show that working in this unexplored space can be profitable when certain conditions are present.
 
-%Learning-Directed Dynamic Voltage and Frequency Scaling for Computation Time Prediction 
+To beneficially use voltage scaling outside conventional DVFS limits, it is necessary to understand how does the size of the voltage guards and the minimum operating voltage - $V_{min}$, relate to the different types of applications. The work of Leng \textit{et al.} \cite{leng_safe_2015} contributes by analyzing the voltage guardband of different applications and by creating a statistical analysis procedure to predict the $V_{min}$ depending on collected performance counters. For the voltage guardband analysis, Leng \textit{et al.} used 57 representative programs which are run on four different GPUs of two different architectures. The testing procedure consists of running each program 1000 times, after which a $12mV$ undervoltage is performed on the GPU core if every run is successful, repeating the procedure until a fault occurs. The faults can be of two types: runtime error, such as segmentation fault, silent data corruption or OS crash, and incorrect output (the results of the undervolt run being different from the run with default voltage).  The most significant finding is that across the suite of tested programs, the $V_{min}$ level is at a relatively large (0.1V - 9.2\% to 0.2V - 18.3\%) percent of the conventional minimum operating voltage level (nominal voltage - 1.09V for the tested cards), allowing for a reduction on energy consumption of up to 25\%. However, in order to successfully use the GPU in an undervoltage scenario, it is necessary to understand what, in the architecture and on the application, determines the size of the voltage margin and the $V_{min}$ 
 
-%Aggressive Voltage and Temperature Control for Power Saving in Mobile Application Processors
-% Leng et al. [6] endeavored to reduce the voltage guardband that is incorporated in conventional GPU operation. The authors pointed out that the guardband for voltage noises stems from various program behaviors and optimized the guardband with offthe-shelf GPUs used in desktops
-%A few recent works centered on voltage optimization. Bacha et al. [4], [5] achieved dynamic voltage reduction using on-chip error correction code-based voltage speculation. A benchmark test with a speciﬁc ﬁrmware demonstrated that approximately 20 percent power conservation is possible with aggressive voltage reduction over Intel’s Itanium processor
-% near-threshold voltage (NTV) technology emphasizes the importance of reduced operating voltage. Kaul et al. [29] introduced the concept of NTV and demonstrated that maximum energy efﬁciency can be achieved using this technology. Intel demonstrated the effectiveness of an NTV Pentium processor [30] that runs on very low power. Voltage down using software techniques facilitates the NTV scheme. 
+The voltage margin's primary purpose is to guarantee the correct functioning of the GPU against the process, voltage (noise) and temperature (PVT) variation and device aging.
+The process variation results from imperfections on the lithography and dopants diffusion. This phenomenon can occur intra-die when devices from the same die present different features depending on its locations, and inter-die, meaning that devices from one die can present different features from devices from another batch of dies. The process variation affects the speed of transistors and overall circuit characteristics by varying the device threshold and speed. In order to guarantee the correct execution of the device at the intended frequency, is necessary to boost the voltage applied to all transistors \cite{thomas_core_2016}.
+Leng tested the influence of process variation by running the set of benchmarks on multiple GPUs of the same model, achieving a maximum variability of 0.07V for the same benchmarks. To test the effect of temperature, all the benchmarks were run at 40ºC and 70ºC core temperature. Measuring the $V_{min}$ in both conditions led to 0.02V variation between the runs. The  $V_{min}$ variation for process and temperature has a relatively uniform impact across all programs and it is not sufficiently large to be leading root determining the guardband size. The variability of aging was not possible to measure directly; however, it is plausible to assume that this effect should produce a similar contribution to process and temperature variation \cite{leng_safe_2015}.
 
+Since the process and temperature variation and device aging, seem not to have sufficient impact, by themselves, to explain the variability of $V_{min}$, voltage noise appears to be the leading cause of this variation. Voltage noise is mainly induced by $di/dt$ droop. This phenomenon makes the actual measured voltage applied to the GPU components, Equation \ref{eq:Vactual}, depend on the rate of change of the current being drawn. 
 
+\begin{equation}
+    \label{eq:Vactual}
+    V_{actual} = V_{DD}-L*\frac{di}{dt}
+\end{equation}
+
+The workload intensity variation in runtime induces the $di/dt$ droop due to the rapid and significant change in current demand from the various functional blocks \cite{thomas_core_2016}. A program that induces a bigger $di/dt$ droop will have a smaller voltage margin (superior $V_{min}$). With so, from an analysis of the running application and the type and rate of change of the workloads, it is possible to predict if an application will have a bigger or smaller voltage margin (the difference between GPU nominal voltage and the actual application $V_{min}$).
+
+Works, such as of Leng \textit{et al.} \cite{leng_safe_2015} and Nakhaeea  \textit{et al.} \cite{nakhaee_lifetime_2018} propose methods to determine the $V_{min}$ with different objectives. While Leng aspires to reduce energy consumption, Nakhaeea expects to improve the lifetime of processors. These two examples are only a few of the possible benefits that the exploration of the voltage scaling brings. To model $V_{min}$, Leng used performance counters measurements to train an ANN that predicts the amount of possible undervolt. The root mean square error (RMSE) between the model prediction and the measured result is 0.5\%, with the maximum over and underprediction error of 3\% and 2\%, respectively. The trained ANN is able to correctly model the variation of $V_{min}$ with the type of workload.
+
+In general, a good model of the minimum operating voltage should be able to not only correctly predict  $V_{min}$ across a significant large set of applications, but also minimize the under and overprediction of this value. Overpredicting $V_{min}$ will most likely lead to the occurrence of program faults, and underpredicting the voltage is not using the benefit of this finding at their most.
+
+The study of Tan \textit{et al.} \cite{tan_combating_2016} explored the effects of using low supply voltage on the GPU register file. Demonstrating that this component is one of the most affected and one of the first provoking program faults when not enough voltage is provided. Tan modeled how different voltage levels are impacted by the process variation of the register file, and presented an architectural solution that by taking advantage of register dead time for reliable operations from unreliable register files at low voltage. 
+
+To take advantage of non-conventional voltage scaling, the problem needs to be tackled on the two presented forms. By both analyzing the minimum required voltage and the size of the guardband, and by studying architecture improvements that can improve the reliability of GPU components at low supply voltage. However, if one uses imprecision tolerant applications, it becomes possible to run GPUs at $V_{min}$ with extra confidence that errors induced by low supply voltage will not cause errors on the application's output. This type of application allows the use of techniques such as timing error propagation (TEP) \cite{nakhaee_lifetime_2018}, where computation errors can be propagated to subsequent logic stages with the expectation that the algorithm itself is able to recover from it.
+
+A common application that is taking, nowadays, great advantages of GPU acceleration is Deep Learning (DL). One of the most important characteristics of this type of algorithms is their imprecision tolerance. The computation of a DL application is an iterative and convergence process, and by the natural adaption of the neural networks learning parameters in runtime, the occurrence of small computation errors do not affect the end prediction of the algorithm \cite{jiao_assessment_2017}.
+
+Tang \textit{et al.} \cite{tang_impact_2019} studied the impact of DVFS parameters on the energy and performance of DL applications. Even though the DVFS exploration only used the default range of frequency and voltage scaling, by tunning the parameters, it was possible to either improve the performance by up to 33\% or reduce the energy consumption by 23.1\%. The work applied the same pair of frequency and voltage throw out the complete training or inference session, however, the authors point out that the different layers that compose a neural network can have different voltage and frequency optimizations points. Moreover, by using the inherent resilience of neural networks, it could be possible to find even better working parameters outside of the conventional DVFS range. To summarize, the creation of a DVFS Deep Learning Aware controller, able to adapt the DVFS parameters to the need of each neural network layer, can achieve even further performance and energy efficiency improvements, being exactly this point, the main objective of this thesis.
