@@ -8,8 +8,12 @@
 %                                                                      %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+
+
 \chapter{Application to Deep Learning}
 \label{chapter:application}
+
+From the set of applications that are classified as imprecision tolerant, deep learning stands out as being the most prominent one. This chapter starts by providing an overview of what is a deep learning application. It is followed by a characterization of the type of benchmarks used on the development of the proposed work. The final section introduces some preliminary results demonstrating that voltage and frequency exploration outside of conventional DVFS limits can benefit deep learning applications execution, focusing on energy consumption optimization.
 
 \section{Deep Learning Overview}
 \label{sec:DLO}
@@ -17,7 +21,7 @@ Deep Learning (DL) is a subset of the large family of Machine Learning methods. 
 
 Biological systems inspired the creation of Artificial Neural Networks (ANN), in which Deep Learning architectures are built on top. This information-processing and distributed communications type of network work by mimicking a simplistic biological brain where the interconnection between the neurons is static and symbolic \cite{marblestone_toward_2016}. 
 
-Different deep learning architectures are being developed, such as convolutional neural networks (CNN), recurrent and Recursive neural networks (RNN), and unsupervised pre-trained networks (UPT). These have been applied to a diversity of fields, including computer vision, speech and audio recognition, natural language processing, bioinformatics, and others. In such applications, deep learning algorithms are being able to achieve comparable and, in some cases, superior results to humans experts \cite{noauthor_googles_nodate}.
+Different deep learning architectures are being developed, such as convolutional neural networks (CNN), recurrent neural networks (RNN), and unsupervised pre-trained networks (UPT). These have been applied to a diversity of fields, including computer vision, speech and audio recognition, natural language processing, bioinformatics, and others. In such applications, deep learning algorithms are being able to achieve comparable and, in some cases, superior results to humans experts \cite{noauthor_googles_nodate}.
 
 \begin{figure}[!htb]
   \centering
@@ -177,19 +181,43 @@ A second level of benchmarks is devised by performing linear combinations of the
 \subsection{DNN Primitives Analysis}
 %Use the DNNMark \cite{dong_dnnmark:_2017} benchmark to tested the gained insights from the simple kernels to automatically optimize the DNN layers first independently, then in more complex arrangements.
 
-Targeting the objective of improving the runtime of complete deep learning models, the second set of benchmarks are composed of DNN primitives. These primitives consist of an intermediary layer of characterization since they consist of kernels that perform the same operations as the benchmarks proposed in 3.2.1, however with the objective of performing the operations involved in deep learning. 
+Targeting the objective of improving the runtime of complete deep learning models, the second set of benchmarks are composed of DNN primitives. These primitives consist of an intermediary characterization layer, where the assessments from the fundamental analysis can be exploited. Each primitive is made of combinations of kernels that perform the same operations as the benchmarks proposed in 3.2.1, targeting the operations involved in deep learning. 
 
-In this section, the DNNMark benchmark introduced by Dong \textit{et al.} \cite{dong_dnnmark:_2017} is used. DNNMark suite consists of a collection of deep neural networks primitives with configurable parameters, such as convolution, pooling, local response normalization, activation fully connected and softmax. Each primitive can be used independently or together. This allows for the characterization of each DNN layer and the interlayer influence.
-
+In this section, the DNNMark benchmark introduced by Dong \textit{et al.} \cite{dong_dnnmark:_2017} is the base of the analysis. DNNMark suite consists of a collection of deep neural networks primitives with configurable parameters, such as convolution, pooling, local response normalization, activation fully connected and softmax. Each primitive can be used independently or together; this allows for the characterization of each DNN layer and the interlayer influence.
 
 
 \subsection{Complete Architectures}
-\subsubsection{CNN}
-\subsubsection{RNN}
-\subsubsection{UPT}
-GAN - generative adversarial networks
+The last set of benchmarks are complete DNN architectures, where the online optimization of DVFS parameters is going to be validated. Current DNN architectures are grouped into Convolutional Neural Networks (CNN), Recurrent Neural Networks (RNN) and Unsupervised Pretrained Networks (UPN). The validation will be done by testing real examples of networks from each type of architecture.
 
-Auto-Encoders - variational autoencoders
+
+\subsubsection{Convolutional Neural Networks}
+Convolutional Neural Networks are able to extract features from the data via convolutions. They are mainly used for image and object recognition and sound analysis. This type of architecture excels when there is some structure to the input data, that is, the data contains sets of specific patterns, organize in a spatial manner, that the neural network can learn to recognize.
+
+CNN architecture generally follows the pattern: input layer, feature-extraction layers and classification layer. The input layer receives a form of three-dimensional data, usually an image with a specific height and width and a depth value (representing color or intensity). The feature extraction layers perform higher-order features extract from the input, generally by performing patterns of convolution layers and pooling layers. Finally, the classification layer is a vector of size \textit{N}, where each output represents a score of prediction confidence for the input to be of a given output class.
+
+To common datasets used to compare and analyse the CNN  performance are MNIST \cite{noauthor_mnist_nodate} and CIFAR10 \cite{noauthor_cifar-10_nodate}. The first consist of 70 000 images of handwritten digits, while the second consists of 60 000 images organized in 10 classes, where each class is a different object or animal.
+
+On this class of architecture the VGG \cite{simonyan_very_2015}, ResNet \cite{he_deep_2015} and     GoogLeNet \cite{szegedy_going_2014} models are used as benchmarks.
+
+\subsubsection{Recurrent Neural Networks}
+
+Recurrent Neural Networks have the added capability of sending information over time-steps. This characteristic allows this type of architecture to have both parallel and sequential data modelling, not only recognizing features from each input, but also by allowing for the extractions of features from the sequences of inputs, modelling the time dimension. 
+
+RNNs are used to model time-series, language, audio, and text since this type of data is inherently ordered and context-sensitive. RNNs contain feedback loops between the layers, in order for each layer to have insights about what comed before. The model prediction follows the general format presented in Equation \ref{eq:rnn}, where y represents the model prediction and x the model inputs. The equation reflects the influence of previous inputs for each output.
+\begin{equation}
+    \label{eq:rnn}
+    y[n] = x[n] + ... + x[n-i]
+\end{equation}
+
+The primitive that compose the feature extraction of RNNs models are LSTM - Long Short Term Memory. This type of layer unit has three gates - input, output and forget gates. The content of each LSTM is moduled by the input and forget gates; this change reflects on the value stored at the memory cell. If both gates are closed, the memory content remains unmodified between the current time-step and the following. The LSTM structure allows for information to be retained on the memory cell across different time-steps.
+\subsubsection{Unsupervised Pretrained Networks}
+
+
+Unsupervised Pretrained Networks is a category of DNN architectures that encompasses architectures such as autoencoders and generative adversarial networks (GANs). This class of DNN architecture departs from the previous, by learning in an unsupervised manner, meaning that the input data given to the network is not previously labelled. This introduces an extra degree of learning freedom by allowing the network to identify and recognize patterns that distinguish the output classes the most.
+
+Autoencoders are used to learn efficient data codings and can be applied for dimensionality reduction or augmentation. Autoencoders allow for the reduction of noise in a signal or to perform resolution increase on an image. GANs can be used to perform sound and video synthesization from images or text by using two neural networks in parallel - a discriminator and a generative network. First, the generative network creates a synthesized output from the given input given. Then the discriminator network tries to classify the input as real or synthesized, providing the classification to the generative network. With the data loop, the generative network updates their weights to fit best what is described as real data.
+
+
 
 \section{Feasibility Assessment}
 To assess the viability of the claim made in Chapter 1, that there are more viable and efficient sets of voltage and frequency that can be employed when Imprecision Tolerant applications are being run, a set of experiments were devised to test the order of magnitude of the energy savings and what are the impacts of working in not default voltage and frequency settings. Accordingly, this chapter starts by presenting the experimental setup in Section \ref{section:experimental_setup}, namely the benchmark application and how was it developed and the GPU devices where the tests were executed. Afterwords, Section \ref{section:dvfseffects} presents some interesting results related to the execution of the application with not default GPU parameters.
@@ -216,21 +244,6 @@ The CNN was trained using the Radeon Vega Frontier Edition GPU, a top of the lin
 
 
 
-\begin{algorithm}[H]
-\SetAlgoLined
-\KwResult{Write here the result }
- initialization\;
- \While{While condition}{
-  instructions\;
-  \eIf{condition}{
-   instructions1\;
-   instructions2\;
-   }{
-   instructions3\;
-  }
- }
- \caption{How to write algorithms}
-\end{algorithm}
 
 \begin{figure}[!htb]
   \centering
