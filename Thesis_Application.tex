@@ -220,51 +220,239 @@ Autoencoders are used to learn efficient data codings and can be applied for dim
 
 
 \section{Feasibility Assessment}
-To assess the viability of the claim made in Chapter 1, that there are more viable and efficient sets of voltage and frequency that can be employed when Imprecision Tolerant applications are being run, a set of experiments were devised to test the order of magnitude of the energy savings and what are the impacts of working in not default voltage and frequency settings. Accordingly, this chapter starts by presenting the experimental setup in Section \ref{section:experimental_setup}, namely the benchmark application and how was it developed and the GPU devices where the tests were executed. Afterwords, Section \ref{section:dvfseffects} presents some interesting results related to the execution of the application with not default GPU parameters.
+The preposition of the presented work states that there are more viable and efficient sets of voltage and frequency that can be employed when running Imprecision Tolerant applications. 
+
+A set of experiments are devised to assess the viability of the claim, gauging the impact that non-conventional DVFS settings have on the application results and measuring the possible energy savings possible to achieve.
+
+Accordingly, this chapter starts by presenting the used experimental setup, namely the benchmark application, how was it developed and where was it tested. Afterwards, the execution results of the application with not default GPU parameters are presented.
 
 
 \subsection{Experimental setup}
 \label{section:experimental_setup}
 
-To experimentally show the possible gains achieved when working in the setup presented before, an Artificial Neural Network is executed on a GPU, and in each run, the pair of frequency and voltage is adjusted. This section presents the application chosen to perform the preliminary tests, followed by a description of the GPU device where the experiments were conducted.
+To assess the possible gains achieved by using non-conventional pairs of voltage and frequency, an under-voltage and overclock exploration is undertaken while running a convolutional neural network. The CNN classifies the MNIST dataset\cite{noauthor_mnist_nodate}, being developed using PyTorch \cite{noauthor_pytorch_nodate}. Pytorch is an open-source machine learning library primarily developed by Facebook's artificial intelligence research group, released under the Modified BSD licence.
 
-To evaluate the energy gains on an imprecision tolerant application, a convolutional neural network (CNN) was used. Convolutional neural networks are a class of artificial neural networks that are most commonly used to analyze images and video to perform image classification. The training of the model, minimization of the loss function, is a convergence process, making this type of applications imprecision tolerent, since small errors on the model training can still lead to the finding of an locally optimal solution.
-The developed CNN classifies the MNIST dataset [link to mnist], a set of 60000 train and 10000 test handwritten digits. The CNN was developed using PyTorch [link to pytorch]. Pytorch is an open source machine learning library primarily developed by Facebook's artificial intelligence research group. It is a free and open-source  software released under the Modified BSD licence [link to this claim]. 
+The CNN training is performed on a Radeon Vega Frontier Edition GPU; the GPU presented in chapter 2. As stated, this graphics card presents eight levels of GPU Core frequency and voltage, Table \ref{tab:gpulevels}, that the GPU chooses in runtime accordingly to its DVFS model. However, the GPU allows for the user definition of the frequency and voltage throw the ROCm System Management Interface - \textit{rocm-smi}. 
 
-\begin{figure}[!htb]
-  \centering
-  \includegraphics[width=0.5\textwidth]{Figures/DL/mnist.png}
-  \caption[]{MNIST dataset example of handwritten digits.}
-  \label{fig:mnist}
-\end{figure}
-
-The CNN was trained using the Radeon Vega Frontier Edition GPU, a top of the line graphics processor accelerator from AMD. This graphics card presents 8 levels of pairs of GPU Core frequency and voltage, Table \ref{tab:gpulevels}, that the GPU chooses in runtime accordingly to the temperature and power required, trying to maximize the performance. The GPU allows for the user definition of the frequency and voltage throw the ROCm System Management Interface - \textit{rocm-smi}. With it, a script was developed that performs undervoltage in steps of 10 mV on each of the 8 default voltage and frequency pairs. If the undervoltage is accepted by the software, the MNIST model is trained and after each run, the achieved accuracy is stored alongside the maximum power and average consumption, total energy consumed and the time that it took to execute the train.
+A script was developed, Algorithm \ref{alg:DVFSexp}, to perform the under-voltage and overclock of the GPU between training sessions. Starting at the lowest performance level, in the case of under-voltage, the script starts by taking a baseline measurement of the default DVFS parameters. After it, it starts to underclock de GPU Core by 10mV, and it reruns the training session. This process repeats until, for a given voltage, the training session fails (the weights of the neurons are \textit{NaN - Not a Number}), marking the minimum required voltage level of the complete model. With this assessment, it is possible to find out what is the minimum required voltage to train the model successfully. The same procedure is applied for overclocking. However, instead of undervolting the GPU core by 10mV between consecutive runs, the GPU core frequency is increased by 10Hz, between the runs. After each training session, the default values of DVFS are set, and it is performed inference of 10000 MNIST digits on each of the performance levels, in order to verify if a model trained in non-conventional DVFS parameters can still be used in a normal operating GPU.
 
 
+\begin{algorithm}[!htb]
+\label{alg:DVFSexp}
+\SetAlgoLined
+\textbf{Input:} set flag indicating under-voltage or overclock.\\
+\textbf{Output:} accuracy, total and maximum power, total and maximum energy, time to train.\\
+ \For{$i\gets0$ \KwTo $8$}{
+    set default DVFS setting\;
+    \While{run MNIST successfully}{
+        store accuracy, total and maximum power, total and maximum energy, time to train\;
+        run MNIST inference with non conventional DVFS parameters\;
+        store accuracy, total and maximum power, total and maximum energy, time to train\;
+        set default DVFS values\;
+         \For{$i\gets0$ \KwTo $8$}{
+            set performance level $i$\;
+             run MNIST inference\;store accuracy, total and maximum power, total and maximum energy, time to train\;
+         }
+        \eIf{under-voltage}{
+            voltage = voltage - 10mV\;
+            set voltage\;
+        }{
+            frequency = frequency + 10Hz\;
+            set frequency\;
+        }
+    }
+}
+ \caption{Automatic DVFS exploration algorithm}
+\end{algorithm}
 
-
-
-
-\begin{figure}[!htb]
-  \centering
-  \includegraphics[width=0.75\textwidth]{Figures/DL/Underclock_Program.png}
-  \caption[]{Flowchart of Automation Undervoltage Script.}
-  \label{fig:undervoltage_program}
-\end{figure}
-
-
-
-
-
-\subsection{Preleminary Results}
-\label{section:dvfseffects}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Preliminary Results}
+\label{section:preliminaryresults}
+
+The developed CNN is trained on each of the default DVFS performance values, with the average time to train, average and maximum power and total energy spent on the training session being registered on table \ref{tab:defaultDVFStrain}. All the training sessions are performed with the memory DVFS parameter at the highest performance level.
+
+The training session consists of performing 20 epochs, meaning that the backpropagation algorithm is evaluated 20 times. For all the performance levels, the maximum registered accuracy was of $99.085\% \pm 0.25\% $, meaning that the change on the frequency and voltage of the GPU core while working in default values, does not induce a variation on the final model accuracy.
+
+\begin{table}[!htb]
+\centering
+\begin{tabular}{lllll}
+\textbf{Performance Level} & \textbf{Time {[}s{]}} & \textbf{Average Power {[}W{]}} & \textbf{Maximum Power {[}W{]}} & \textbf{Total Energy {[}J{]}} \\ \hline
+0                          & 268                   & 13.27                          & 35                             & 3802.877                      \\
+1                          & 268                   & 16.41                          & 35                             & 4765.125                      \\
+2                          & 267                   & 19                             & 35                             & 5420.913                      \\
+3                          & 266                   & 20.99                          & 47                             & 6728.036                      \\
+4                          & 263                   & 23.52                          & 64                             & 6725.252                      \\
+5                          & 263                    & 25.79                          & 56                             & 6489.767                      \\
+6                          & 263                   & 28.18                          & 50                             & 6257.776                      \\
+7                          & 260                   & 48.12                          & 85                             & 6086.901                     
+\end{tabular}
+\caption{Default Core DVFS parameters - CNN training session}
+\label{tab:defaultDVFStrain}
+\end{table}
+
+Two paths are followed to explore non-conventional DVFS parameters. The first is to overclock the core, maintaining the defaults voltage of each performance level, while the second is to perform under-voltage, keeping the default frequency of each performance level.
+
 \subsubsection{OverClock}
-\label{section:underclock}
+\label{section:OverClock}
+Overclocking the GPU core did not induce a significant reduction on the time that the network needs to be trained (only an average of $2\%$ reduction has achieved). This result could already be predicted due to the training time not changing significantly between the different performance levels. However, this result only shows that the application bottleneck as a whole is not at the GPU core, but instead on the memory system. In specific layers of the artificial network, that are compute bounded, it may be possible to decrease the computation time by increasing the clock frequency.
 
-\subsubsection{UnderVoltage}
+Table \ref{tab:overclocking-res} displays the overclocking overhead available to each performance level. After the measured points, computation errors started to appear, causing the values of the weight to \textit{NaN}.
+
+\begin{table}[!htb]
+\centering
+\begin{tabular}{l|llllllll}
+\textbf{Performance Level}  & 0   & 1   & 2   & 3   & 4   & 5   & 6   & 7    \\
+\textbf{Maximum operating frequency [Hz]}    & 1012  & 1171 & 1308 & 1449 & 1528 & 1620 & 1708 & 1770 \\
+\textbf{Overclocking  {[}Hz{]}} &  160  & 180 & 180 & 180 & 180 & 180 & 180 &  170
+\end{tabular}
+\caption{Overclocking  Results}
+\label{tab:overclocking-res}
+\end{table}
+
+\subsubsection{Under-Voltage}
+\label{section:under-voltage}
+
+Due to the relation between voltage and the power, Equation \ref{eq:dynpower} and \ref{eq:cmospower}, it was expected that measured average and maximum power and the total energy consumption decreased with the under-voltage. However, for the first $40mV$, an increase in these values is observed, compared to the default ones. This can be explained due to the optimizations that AMD introduces on the architecture and on the DVFS firmware that make the default operating point the best within the predetermined voltage and frequency level. Nonetheless, if one continues to under-voltage the GPU core, the expected decrease in power and energy appears. In Figure \ref{fig:under6}, the delta of the maximum and average power consumption and energy between the default run for the performance level 6, and each of the non-conventional runs is computed. It was on this level that the maximum reduction on these three metrics was achieved. For an under-voltage of $170mV$ (the minimum that still led to valid results), the maximum and average power were reduced, on average,  by $40.47\%$ and  $28.82\%$  respectively, what led to a $26.92\%$ reduction on the total spent energy to train the CNN. On this DVFS configuration, the accuracy of the model remains at the $99.085\% \pm 0.25\%$ margin with the training time remaining within $2\%$ of the default run for the performance level 6.
+
+\begin{figure}[!htb]
+    \centering
+    \noindent\begin{minipage}{.49\textwidth}
+    \begin{tikzpicture}
+    \begin{axis}[
+        title={$\Delta$ Maximum and Average Power Consumption},
+        xlabel={Voltage [mV]},
+        ylabel={$\Delta$ Energy [\%]},
+        xmin=950, xmax=1150,
+        ymin=-50, ymax=20,
+        xtick={950,1000,1050,1100,1150,1200},
+        ytick={-50,-40,-30,-20,-10,0,10,20},
+        legend pos=north west,
+        ymajorgrids=true,
+        grid style=dashed,
+    ]
+     
+    \addplot[
+        color=blue,
+        mark=square,
+        ]
+        coordinates {
+        (1150, 0)
+        (1140, -2.380952381)
+        (1130, -14.28571429)
+        (1120, -16.66666667)
+        (1110, 7.142857143)
+        (1100, -17.85714286)
+        (1090, -20.23809524)
+        (1080, -21.42857143)
+        (1070, -22.61904762)
+        (1060, -26.19047619)
+        (1050, -26.19047619)
+        (1040, -15.47619048)
+        (1030, -26.19047619)
+        (1020, -32.14285714)
+        (1010, -30.95238095)
+        (1000, -33.33333333)
+        (990,  -33.33333333)
+        (980,  -40.47619048)
+        };
+        \legend{Maximum Power}
+    
+    \addplot[
+        color=red,
+        mark=square,
+        ]
+        coordinates {
+        (1150, 0)
+        (1140, 5.785750379)
+        (1130, 2.097018696)
+        (1120, 1.414855988)
+        (1110, -3.3097524)
+        (1100, -4.749873674)
+        (1090, -4.497220819)
+        (1080, -8.943911066)
+        (1070, -9.525012633)
+        (1060, -11.72309247)
+        (1050, -15.05811016)
+        (1040, -15.18443658)
+        (1030, -18.67104598)
+        (1020, -20.97018696)
+        (1010, -21.72814553)
+        (1000, -24.60838807)
+        (990,  -25.54320364)
+        (980,  -28.80242547)
+        };
+        \legend{Average Power}
+     
+    \end{axis}
+    \end{tikzpicture}
+    \end{minipage}\hfill
+    \begin{minipage}{.49\textwidth}
+    \begin{tikzpicture}
+    \begin{axis}[
+        title={$\Delta$ Energy},
+        xlabel={Voltage [mV]},
+        ylabel={$\Delta$ Energy [\%]},
+        xmin=950, xmax=1150,
+        ymin=-30, ymax=10,
+        xtick={950,1000,1050,1100,1150,1200},
+        ytick={-30,-20,-10,0,10},
+        legend pos=north west,
+        ymajorgrids=true,
+        grid style=dashed,
+    ]
+     
+    \addplot[
+        color=blue,
+        mark=square,
+        ]
+        coordinates {
+        (980, -26.92226994)
+        (990, -23.80800659)
+        (1000, -24.23118962)
+        (1010, -22.02895897)
+        (1020, -20.31734614)
+        (1030, -19.24458686)
+        (1040, -15.77694737)
+        (1050, -14.35819968)
+        (1060, -11.963407)
+        (1070, -7.86673507)
+        (1080, -7.422421768)
+        (1090, -5.919590672)
+        (1100, -3.933564482)
+        (1110, -4.275036236)
+        (1120, 0.564039806)
+        (1130, 2.456905505)
+        (1140, 6.437273439)
+        (1150, 0)
+        };
+        \legend{Energy}
+     
+    \end{axis}
+    \end{tikzpicture}
+    \end{minipage}
+    \caption{Under-voltage on performance level 6.}
+    \label{fig:under6}
+\end{figure}
+
+The inference runs using the default DVFS parameters always led to correct results, on all performance levels, which means that the trained weights achieved with non-conventional DVFS parameters can still be used to perform inference on another GPU running default parameters.
+
+\begin{table}[!htb]
+\centering
+\begin{tabular}{l|llllllll}
+\textbf{Performance Level}  & 0   & 1   & 2   & 3   & 4   & 5   & 6   & 7    \\
+\textbf{Minimum Voltage [mV]}    & 800 & 800 & 840 & 880 & 910 & 940 & 980 & 1040 \\
+\textbf{Undervolt {[}mV{]}} & 0   & 100 & 110 & 120 & 140 & 160 & 170 & 160 
+\end{tabular}
+\caption{Under-Voltage Results}
+\label{tab:undervoltage-res}
+\end{table}
+
+The achieved results show that there are benefits of finding the lowest voltage level since the power and energy reduction are substantial. Table \ref{undervoltage-res} shows the amount of under-voltage that is possible to achieve for this CNN on each performance level. It is on the performance level 6 that more under-voltage capabilities are possible..
 
 
 
+\subsubsection{Analysis}
+The evidence that the performance of the application does decrease substantially with the increase in the core frequency/voltage may indicate that this type of application is overall memory bounded. However, it is necessary to explore the impacts of memory scaling further to confirm this theory. 
 
+Nevertheless, even though the application as a whole may be memory bounded, some of the layers that construct the neural network may have different behaviour. A specific layer tunning mechanism may lead to both further reductions in energy consumption and performance increase.
