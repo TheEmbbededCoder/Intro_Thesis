@@ -71,6 +71,7 @@ The inference or prediction process corresponds to performing a forward propagat
 For the creation of the novel DVFS aware mechanism, three types of benchmarking applications are going to be needed. In the first stage, the characterization of non-conventional DVFS parameters starts by analyzing simple kernels where different parts of the GPU architecture are stressed, and the effects of combine work types are tested. On the second stage, The simple GPU kernels are combined, forming abstract and independent kernels that represent the variety of work that is performed on the many layer types that compose a DNN model. The last benchmarks, where the complete DVFS aware mechanism is tested, are the fully-fledged state of the art deep neural networks models used nowadays in the use cases stated at Section \ref{sec:DLO}.
 
 \subsection{Fundamental Analysis}
+\label{sec:funAnal}
 %State different examples of kernels (utilizar os que o João Guerreiro utilizou nos papers de modeling and decompling e GPGPU Power Modeling)
 
 The fundamental analysis and characterization of the GPU are done by running and profiling simple benchmarks that stress the different components of the GPU architecture. Following the strategy used by Guerreiro \textit{et al.} in \cite{guerreiro_gpgpu_2018} \cite{guerreiro_modeling_2019}, a set of benchmarks are devised that fit inside of six categories: arithmetic, special units, branch, shared memory, L2 cache and DRAM.  Listings 3.1 to 3.6 exemplify the skeleton of each category of benchmarks.
@@ -179,6 +180,7 @@ A second level of benchmarks is devised by performing linear combinations of the
 
 
 \subsection{DNN Primitives Analysis}
+\label{sec:dnnPri}
 %Use the DNNMark \cite{dong_dnnmark:_2017} benchmark to tested the gained insights from the simple kernels to automatically optimize the DNN layers first independently, then in more complex arrangements.
 
 Targeting the objective of improving the runtime of complete deep learning models, the second set of benchmarks are composed of DNN primitives. These primitives consist of an intermediary characterization layer, where the assessments from the fundamental analysis can be exploited. Each primitive is made of combinations of kernels that perform the same operations as the benchmarks proposed in 3.2.1, targeting the operations involved in deep learning. 
