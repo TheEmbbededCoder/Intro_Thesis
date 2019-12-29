@@ -115,7 +115,7 @@ B[threadId]=r0;
 Listing 3.3 studies the influence of branches on the code, that will affect the scheduling of the threads running on each CU. Listing 3.4 explicitly stresses the memory subsystem by using shared memory to allow communication between threads running on the same CU. Here, each thread consecutively performs a load and a store to the shared memory. The addresses used by each thread were chosen to minimize bank conflicts on both operations.
 
 
-\noindent\begin{minipage}{.4\textwidth}
+\noindent\begin{minipage}{.38\textwidth}
 \begin{lstlisting}[language=C, caption={Branches Code}]
 DATA_TYPE r0, r1, r2, r3;
 
@@ -132,7 +132,7 @@ for(int i=0;i<N;i++) {
 B[threadId]=r0;
 \end{lstlisting}
 \end{minipage}\hfill
-\begin{minipage}{.55\textwidth}
+\begin{minipage}{.59\textwidth}
 \begin{lstlisting}[language=C, caption={Shared Memory Code}]
 __shared__ DATA_TYPE shared[THREADS]; 
 DATA_TYPE r0; 
@@ -189,6 +189,8 @@ In this section, the DNNMark benchmark introduced by Dong \textit{et al.} \cite{
 
 
 \subsection{Complete Architectures}
+\label{sec:compArch}
+
 The last set of benchmarks are complete DNN architectures, where the online optimization of DVFS parameters is going to be validated. Current DNN architectures are grouped into Convolutional Neural Networks (CNN), Recurrent Neural Networks (RNN) and Unsupervised Pretrained Networks (UPN). The validation will be done by testing real examples of networks from each type of architecture.
 
 
@@ -197,7 +199,7 @@ Convolutional Neural Networks are able to extract features from the data via con
 
 CNN architecture generally follows the pattern: input layer, feature-extraction layers and classification layer. The input layer receives a form of three-dimensional data, usually an image with a specific height and width and a depth value (representing color or intensity). The feature extraction layers perform higher-order features extract from the input, generally by performing patterns of convolution layers and pooling layers. Finally, the classification layer is a vector of size \textit{N}, where each output represents a score of prediction confidence for the input to be of a given output class.
 
-To common datasets used to compare and analyse the CNN  performance are MNIST \cite{noauthor_mnist_nodate} and CIFAR10 \cite{noauthor_cifar-10_nodate}. The first consist of 70 000 images of handwritten digits, while the second consists of 60 000 images organized in 10 classes, where each class is a different object or animal.
+To common datasets used to compare and analyse the CNN  performance are MNIST \cite{noauthor_mnist_1999} and CIFAR10 \cite{noauthor_cifar-10_2010}. The first consist of 70 000 images of handwritten digits, while the second consists of 60 000 images organized in 10 classes, where each class is a different object or animal.
 
 On this class of architecture the VGG \cite{simonyan_very_2015}, ResNet \cite{he_deep_2015} and     GoogLeNet \cite{szegedy_going_2014} models are used as benchmarks.
 
@@ -232,7 +234,7 @@ Accordingly, this chapter starts by presenting the used experimental setup, name
 \subsection{Experimental setup}
 \label{section:experimental_setup}
 
-To assess the possible gains achieved by using non-conventional pairs of voltage and frequency, an under-voltage and overclock exploration is undertaken while running a convolutional neural network. The CNN classifies the MNIST dataset\cite{noauthor_mnist_nodate}, being developed using PyTorch \cite{noauthor_pytorch_nodate}. Pytorch is an open-source machine learning library primarily developed by Facebook's artificial intelligence research group, released under the Modified BSD licence.
+To assess the possible gains achieved by using non-conventional pairs of voltage and frequency, an under-voltage and overclock exploration is undertaken while running a convolutional neural network. The CNN classifies the MNIST dataset\cite{noauthor_mnist_1999}, being developed using PyTorch \cite{noauthor_pytorch_2016}. Pytorch is an open-source machine learning library primarily developed by Facebook's artificial intelligence research group, released under the Modified BSD licence.
 
 The CNN training is performed on a Radeon Vega Frontier Edition GPU; the GPU presented in chapter 2. As stated, this graphics card presents eight levels of GPU Core frequency and voltage, Table \ref{tab:gpulevels}, that the GPU chooses in runtime accordingly to its DVFS model. However, the GPU allows for the user definition of the frequency and voltage throw the ROCm System Management Interface - \textit{rocm-smi}. 
 
@@ -322,7 +324,7 @@ Due to the relation between voltage and the power, Equation \ref{eq:dynpower} an
     \noindent\begin{minipage}{.49\textwidth}
     \begin{tikzpicture}
     \begin{axis}[
-        title={$\Delta$ Maximum and Average Power Consumption},
+        title={$\Delta$ Maximum and Average Power},
         xlabel={Voltage [mV]},
         ylabel={$\Delta$ Energy [\%]},
         xmin=950, xmax=1150,
@@ -358,7 +360,7 @@ Due to the relation between voltage and the power, Equation \ref{eq:dynpower} an
         (990,  -33.33333333)
         (980,  -40.47619048)
         };
-        \legend{Maximum Power}
+        \addlegendentry{Maximum Power}
     
     \addplot[
         color=red,
@@ -384,7 +386,7 @@ Due to the relation between voltage and the power, Equation \ref{eq:dynpower} an
         (990,  -25.54320364)
         (980,  -28.80242547)
         };
-        \legend{Average Power}
+        \addlegendentry{Average Power}
      
     \end{axis}
     \end{tikzpicture}
@@ -450,7 +452,7 @@ The inference runs using the default DVFS parameters always led to correct resul
 \label{tab:undervoltage-res}
 \end{table}
 
-The achieved results show that there are benefits of finding the lowest voltage level since the power and energy reduction are substantial. Table \ref{undervoltage-res} shows the amount of under-voltage that is possible to achieve for this CNN on each performance level. It is on the performance level 6 that more under-voltage capabilities are possible..
+The achieved results show that there are benefits of finding the lowest voltage level since the power and energy reduction are substantial. Table \ref{tab:undervoltage-res} shows the amount of under-voltage that is possible to achieve for this CNN on each performance level. It is on the performance level 6 that more under-voltage capabilities are possible..
 
 
 
