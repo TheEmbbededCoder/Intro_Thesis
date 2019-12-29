@@ -8,40 +8,34 @@
 %                                                                      %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\chapter{Proposal}
+\chapter{Proposal DVFS Aware Mechanism for DNN applications}
 \label{chapter:implementation}
-\begin{figure}[!htb]
-  \centering
-  \includegraphics[width=0.75\textwidth]{Figures/Proposel/DVFS_Aware_Controller.png}
-  \caption[Controller]{DVFS Aware Controller Block Diagram.}
-  \label{fig:controlerDVFSaware}
-\end{figure}
 
-The main goal of this work is to designed and implement a GPU DVFS aware mechanism. This new mechanism will enforce non-conventional DVFS parameters to improve the energy efficiency of GPU devices, running deep learning applications. 
+The main goal of this work is to design and implement a GPU DVFS aware mechanism that can be effectively and efficiently applied to deep learning applications. This new mechanism shall enforce non-conventional DVFS parameters to improve the energy efficiency of GPU devices when running deep learning applications. 
 
-Two steps are required to acquire sufficient knowledge to design the controller. First, a characterization of the use of non-conventional DVFS parameters has to be performed for different workload scenarios, and second, a power and performance model has to be created. This chapter will start by providing an overview of how those two steps are going to be executed and what kinds of insights are expected to be uncovered. Then an overview of the GPU DVFS aware mechanism will be provided, connecting how do the previous points are connect, in the architecture of the solution. Finally, an overview of how the mechanism will be tested is described is presented.
+Two steps are needed to acquire the required knowledge basis to design the controller. First, a characterization of the use of non-conventional DVFS parameters has to be performed for different workload scenarios; second, a power and performance model has to be created. This chapter will start by providing a brief overview of how those two steps are going to be executed and what kinds of insights are expected to be uncovered. Then, an overview of the envisaged GPU DVFS aware mechanism will be provided, by describing how do the previous points shall be connected, in the architecture of the solution. Finally, an overview of how the mechanism will be tested is described is presented.
 
-The experimental work will be conducted on the Radeon Vega Frontier Edition presented in Chapter 2. This GPU provides the two necessary tools to both do the DVFS exploration and customization implementation through the profiling software - ROC-Profiler \cite{noauthor_rocm-developer-tools/rocprofiler_2019}, and tunning software - ROC-SMI \cite{noauthor_radeonopencompute/roc-smi_2019}.
+The experimental work will be conducted on the Radeon Vega Frontier Edition presented in Chapter 2. This GPU provides the two necessary tools to do both the DVFS exploration and customization through the provided profiling software - ROC-Profiler \cite{noauthor_rocm-developer-tools/rocprofiler_2019}, and tunning software - ROC-SMI \cite{noauthor_radeonopencompute/roc-smi_2019}.
 
 \section{Non-convectional GPU DVFS characterization}
 
 The objective of the characterization is to understand how the different workloads impact the voltage margin and how does performance and energy consumption relates to DVFS parameters. 
 
-This part of the work will extend the work of Guerreiro \textit{et al.} in \cite{guerreiro_gpgpu_2018} \cite{guerreiro_modeling_2019} and Leng \textit{et al.} in \cite{leng_safe_2015}, by combining aggressive but safe voltage reduction with the
-drawing of optimization curves, like the one of Figure \ref{fig:optcurves}. In this kind of plot, points of frequency/voltage are drawn, relating the performance achieved with the amount of energy spent. By using it, it is possible to optimize the DVFS settings for pure performance, energy efficiency or energy saving.
+This part of the work will extend the work of Guerreiro \textit{et al.} in \cite{guerreiro_gpgpu_2018} \cite{guerreiro_modeling_2019} and Leng \textit{et al.} in \cite{leng_safe_2015}, by combining aggressive (but safe) voltage reduction with the
+drawing of optimization curves, like the one of Figure \ref{fig:optcurves}. In this kind of plot, the gathered points of frequency/voltage are drawn, relating the performance achieved with the amount of energy spent. By using it, it is possible to optimize the DVFS settings for pure performance, energy efficiency or energy saving.
 
 \begin{figure}[!htb]
   \centering
   \includegraphics[width=0.3\textwidth]{Figures/Proposel/curves.png}
-  \caption[Controller]{Example of optimization curve.}
+  \caption[Controller]{Example of a DVFS optimization curve.}
   \label{fig:optcurves}
 \end{figure}
 
-The characterization will be done in two levels, first a fundamental analysis, using simple benchmarks, and at a higher level, using DNN primitives individually.
+The characterization will be done in two levels: first a fundamental analysis, using simple benchmarks; and then, at a higher level, using DNN primitives individually.
 
 \subsection{Fundamental Analysis}
 \label{sec:funAnali}
-As stated in chapter 2, GPUs contain a significant voltage guardband to guarantee correct operation for all kinds of workloads and to be able to resist voltage noise. Using the benchmarks presented in Section \ref{sec:funAnal}, the size of these margins will be measured, first for each kind of benchmarks, and then to combinations of them, mimicking more complex workloads. This analysis will be performed by repeatedly running each benchmark at increasingly reduced voltage, and evaluating if the results being produced are the ones expected. When a benchmark is not able to be run at the indented under-voltage value, due to computation errors, or GPU crashes, the minimum voltage, $V_{min}$, is identified.
+As stated in chapter 2, GPUs contain a significant voltage guardband to guarantee the correct operation for all kinds of workloads and to be able to resist to voltage noise. Using the benchmarks presented in Section \ref{sec:funAnal}, the size of these margins will be measured, first for each kind of benchmarks, and then to combinations of them, mimicking more complex workloads. This analysis will be performed by repeatedly running each benchmark at increasingly reduced voltage, and evaluating if the results being produced are the ones expected. When a benchmark is not able to be run at the intented under-voltage value, due to computation errors, or GPU crashes, the minimum voltage, $V_{min}$, is identified.
 
 This analysis will allow an understanding of the impact that the activation and deactivation of the different GPU components cause on the voltage noise, the main contributing factor to the size of the voltage guardband.
 
@@ -49,12 +43,12 @@ The second part of the analysis is to create the optimization curves for each be
 
 
 \subsection{DNN Primitives Analysis}
-The insights of the fundamental analysis will help to guide the DNN primitive analysis and characterization. Here, the benchmarks proposed in Section \ref{sec:dnnPri} will be used to understand how to optimize the different layers of a complete DNN. 
+The obtained insights of the fundamental analysis will help to guide the DNN primitive analysis and characterization. Here, the benchmarks proposed in Section \ref{sec:dnnPri} will be used to understand how to optimize the different layers of a complete DNN. 
 
-On the preliminary work, Section 3.3, the $V_{min}$ was determined for a CNN; however, this results only indicates that there is a specific layer on that CNN that has the determined  $V_{min}$. The characterization of DVFS parameters in a per layer way allows for further optimizations of the DVFS to the running neural network.
+On the preliminary work that was already evaluated (see Section 3.3), the $V_{min}$ was determined for a CNN. However, these results only indicate that there is a specific layer on that CNN that has the determined  $V_{min}$. The characterization of DVFS parameters in a per layer way shall allow for further optimizations of the DVFS to the running neural network.
 
 \section{Power and Performance Model}
-The second step to create the DVFS aware mechanism is to have a valid prediction model for power and performance. This mechanism will use the performance counters extracted from the runtime of the benchmarks from Section \ref{sec:funAnal} and ref{sec:dnnPri}, references for the type of application and user input of the desired optimization (performance, energy efficiency or energy saving) to predict $V_min$ and the best pair of frequency/voltage. Figure \ref{fig:model} exemplifies the block diagram of the power and performance model.
+The second step to create the aimed DVFS aware mechanism is to have a valid prediction model for power and performance. This mechanism will use the performance counters extracted from the runtime of the benchmarks from Section \ref{sec:funAnal} and \ref{sec:dnnPri}, the references for the type of application and the user input concerning the desired optimization (performance, energy efficiency or energy saving) to predict $V_{min}$ and the best pair of frequency/voltage. Figure \ref{fig:model} exemplifies the block diagram of the power and performance model.
 
 \begin{figure}[!htb]
   \centering
@@ -63,17 +57,24 @@ The second step to create the DVFS aware mechanism is to have a valid prediction
   \label{fig:model}
 \end{figure}. 
 
-The profiling results from Section 4.1.1,  (performance counters values, performance, power and energy) will be used to train an artificial neural network (ANN) that will model the power and prediction. Following the approach of Song \textit{et al.} \cite{song_simplified_2013} and Guerreiro  \textit{et al.} \cite{guerreiro_modeling_2019}, the trained ANN should be able to correctly predict the best DVFS settings for both simple kernels, as well, for DNN primitives and full DNN layers from Section 4.1.2.
+The profiling results that were referred in Section 4.1.1 (performance counter values, performance, power and energy) will be used to train an artificial neural network (ANN) that will model the power and performance of the GPU. By following the approach of Song \textit{et al.} \cite{song_simplified_2013} and Guerreiro  \textit{et al.} \cite{guerreiro_modeling_2019}, the trained ANN should be able to correctly predict the best DVFS settings for either simple kernels, for DNN primitives and for full DNN layers as those presented in Section 4.1.2.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{GPU DVFS Aware Mechanism}
 \label{section:DVFSaware}
 
-To design the DVFS aware control mechanism, Figure \ref{fig:controlerDVFSaware}, it is first necessary to extend the profiling application to support on-demand performance counters query and profiling of none C based applications. Since the deep learning libraries and applications used nowadays are developed in Python, a C static library will be developed, in order to have access to the performance counters values, at higher-level programming languages.
+\begin{figure}[!htb]
+  \centering
+  \includegraphics[width=0.75\textwidth]{Figures/Proposel/DVFS_Aware_Controller.png}
+  \caption[Controller]{Envisaged DVFS Aware Controller Block Diagram.}
+  \label{fig:controlerDVFSaware}
+\end{figure}
 
-With an on-demand profiler, it is possible to construct a \textit{watch} application responsible for monitoring both the GPU and the deep learning application state. The \textit{watch} application will control the AMD DVFS mechanism, through the ROC-SMI interface, by providing the best frequency and voltage level for each performance level and by setting, depending on the DNN layer running, the most appropriated performance level, depending on the user optimization target (performance, energy efficiency or energy savings).
+To design the aimed DVFS aware control mechanism, (see Figure \ref{fig:controlerDVFSaware}), it is first necessary to extend the profiling application to support on-demand performance counters query and profiling of none C based applications. Since the deep learning libraries and applications used nowadays are developed in Python, a C static library will be developed, in order to have access to the performance counters values, at higher-level programming languages.
 
-The final step of the proposed work is to assess the performance and energy gains in real-world applications. For that, examples from the three categories of architectures proposed in Section \ref{sec:compArch} are going to be used. At this stage, the objective is to evaluate not only the performance and energy gains but also the feasibility of integrating this kind of DVFS aware mechanism in practical situations. A critical metric to estimate is the impact of running the new DVFS mechanism, mainly in computing the overall price to train the model with and without the DVFS mechanism. This final metric is the defining factor, for a solution like this one, to be implemented and deployed as a valid and improved solution for GPUs running deep learning applications.
+With such an on-demand profiler, it is possible to construct a \textit{watch} application responsible for monitoring both the GPU and the deep learning application state. The \textit{watch} application will control the AMD DVFS mechanism, through the ROC-SMI interface, by providing the best frequency and voltage level for each performance level and by setting, depending on the DNN layer running, the most appropriated performance level, depending on the user optimization target (performance, energy efficiency or energy savings).
+
+The final step of the proposed work is to assess the performance and energy gains in real-world applications. For such purpose, examples from the three categories of architectures proposed in Section \ref{sec:compArch} are going to be used. At this stage, the objective is to evaluate not only the performance and energy gains but also the feasibility of integrating this kind of DVFS aware mechanism in practical situations. A critical metric to estimate is the impact of running the new DVFS mechanism, mainly in terms of the cost (overhead) to train the model with and without the DVFS mechanism. This final metric is the defining factor, for a solution like this one, to be implemented and deployed as a valid and improved solution for GPUs running deep learning applications.
 
 
 
