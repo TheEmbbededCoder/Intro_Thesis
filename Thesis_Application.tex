@@ -68,7 +68,9 @@ The inference (or prediction) process corresponds to performing a forward propag
 
 \section{Benchmarks}
 
-For the definition of the novel DVFS aware mechanism, three types of benchmarking applications are going to be needed. In the first stage, the characterization of non-conventional DVFS parameters starts by analyzing simple kernels, where different parts of the GPU architecture are stressed, and the effects of combine work types are tested. On the second stage, The simple GPU kernels are combined, forming abstract and independent kernels that represent the variety of work that is performed on the many layer types that compose a DNN model. The last benchmarks, where the complete DVFS aware mechanism is tested, are the fully-fledged state of the art deep neural networks models used nowadays in the use cases stated at Section \ref{sec:DLO}.
+For the definition of the novel DVFS aware mechanism, three types of benchmarking applications are going to be needed. In the first stage, the characterization of non-conventional DVFS parameters starts by analyzing simple kernels, where different parts of the GPU architecture are stressed individually. 
+On the second stage, benchmarks of DNN layers are going to be tested. If one looks inside of these DNN layers, they can be decomposed on the type of operations being performed on the fundamental analysis benchmarks. With this second stage, the effects of combined workloads are going to be evaluated.
+The last benchmarks are the fully-fledged state of the art deep neural networks models used nowadays in the use cases stated at Section \ref{sec:DLO}. These are going to be used to test the complete DVFS aware mechanism.
 
 \subsection{Fundamental Analysis}
 \label{sec:funAnal}
@@ -77,10 +79,10 @@ The fundamental analysis and characterization of the GPU are done by running and
 
 Listing 3.1 exercises the arithmetic part of the CU, by performing sequences of multiplications and sums, with data presented on each CU registers. By changing the DATA\_TYPE parameter between int,  float and double, the effects of the type of operand and increased precision can be studied. The benchmark execution starts by each thread loading a value from the global memory to its registers. It is followed by a variable sequence of size \textit{N} of arithmetic operations followed by placing the computed value back on the global memory. By varying \textit{N}, it can be studied the data utilization rate (number of instructions performed to each pair of load/store instructions).
 
-
 Listing 3.2 exercises special arithmetic units devised to compute non-linear functions (as the ones used by deep learning applications). Similarly to Listing 3.1, this benchmark starts by loading a value from the global memory, then performs a sequence of size \textit{N} of arithmetic operations and it ends by storing the value back on the global memory.
 
-\noindent\begin{minipage}{.45\textwidth}[!b]
+
+\noindent\begin{minipage}[!b]{.45\textwidth}
 \centering
 \begin{lstlisting}[language=C, caption={Int, SP, DP Code}]
 DATA_TYPE r0, r1, r2, r3;
@@ -96,7 +98,7 @@ for (int i=0;i<N;i++) {
 B[threadId]=r0;
 \end{lstlisting}
 \end{minipage}\hfill
-\begin{minipage}{.45\textwidth}
+\begin{minipage}[!b]{.45\textwidth}
 \centering
 \begin{lstlisting}[language=C, caption={SF Code}]
 DATA_TYPE r0, r1, r2, r3;
@@ -112,11 +114,10 @@ for(int i=0;i<N;i++) {
 B[threadId]=r0;
 \end{lstlisting}
 \end{minipage}
-\noindent\begin{minipage}{.38\textwidth}[!b]
+\noindent\begin{minipage}[!b]{.38\textwidth}
 \centering
 \begin{lstlisting}[language=C, caption={Branches Code}]
 DATA_TYPE r0, r1, r2, r3;
-
 r0=A[threadId]; 
 r1=r2=r3=r0; 
 for(int i=0;i<N;i++) {  
@@ -130,7 +131,7 @@ for(int i=0;i<N;i++) {
 B[threadId]=r0;
 \end{lstlisting}
 \end{minipage}\hfill
-\begin{minipage}{.59\textwidth}
+\begin{minipage}[!b]{.57\textwidth}
 \centering
 \begin{lstlisting}[language=C, caption={Shared Memory Code}]
 __shared__ DATA_TYPE shared[THREADS]; 
@@ -142,7 +143,7 @@ for(int i=0;i<COMP_ITERATIONS;i++) {
 }
 \end{lstlisting}
 \end{minipage}
-\noindent\begin{minipage}{.55\textwidth}[!b]
+\noindent\begin{minipage}[!b]{.5\textwidth}
 \centering
 \begin{lstlisting}[language=C, caption={L2 Cache Code}]
 DATA_TYPE r0;
@@ -155,11 +156,10 @@ for(int i=0;i<COMP_ITERATIONS;i++) {
 cdout[threadId]=r0;
 \end{lstlisting}
 \end{minipage}\hfill
-\begin{minipage}{.4\textwidth}
+\begin{minipage}[!b]{.43\textwidth}
 \centering
 \begin{lstlisting}[language=C, caption={DRAM Code}]
 DATA_TYPE r0, r1;
-
 r0=A[threadId]; 
 r1=r0; 
 for (int i=0;i<N;i++) {  
@@ -169,6 +169,8 @@ for (int i=0;i<N;i++) {
 B[threadId]=r0
 \end{lstlisting}
 \end{minipage}
+
+
 
 Listing 3.3 studies the influence of branches on the code, that will affect the scheduling of the threads running on each CU. Listing 3.4 explicitly stresses the memory subsystem, by using shared memory to allow communication between threads running on the same CU. Here, each thread consecutively performs a load and a store to the shared memory. The addresses used by each thread were chosen to minimize bank conflicts on both operations.
 
@@ -204,7 +206,7 @@ Two common datasets used to compare and analyse the CNN  performance are MNIST \
 
 On this class of architecture, the VGG \cite{simonyan_very_2015}, ResNet \cite{he_deep_2015} and GoogLeNet \cite{szegedy_going_2014} models are used as benchmarks.
 
-\subsubsection{Recurrent Neural Networks}
+\subsubsection{Recurrent Neural Networks (RNN)}
 
 Recurrent Neural Networks have the added capability of sending information over time-steps. This characteristic allows this type of architecture to have both parallel and sequential data modeling, not only recognizing features from each input, but also by allowing for the extraction of features from the sequences of inputs, modelling the time dimension. 
 
@@ -217,7 +219,7 @@ RNNs are used to model time-series, language, audio, and text since this type of
 The primitive that compose the feature extraction of RNN models are LSTM - Long Short Term Memory. This type of layer unit has three gates - input, output and forget gates. The content of each LSTM is moduled by the input and forget gates; this change reflects on the value stored at the memory cell. If both gates are closed, the memory content remains unmodified between the current time-step and the following. The LSTM structure allows for information to be retained/forgotten on the memory cell across different time-steps.
 
 
-\subsubsection{Unsupervised Pretrained Networks}
+\subsubsection{Unsupervised Pretrained Networks (UPN)}
 Unsupervised Pretrained Networks is a category of DNN architectures that encompasses architectures such as autoencoders and generative adversarial networks (GANs). This class of DNN architecture departs from the previous ones, by learning in an unsupervised manner, meaning that the input data given to the network is not previously labelled. This introduces an extra degree of learning freedom, by allowing the network to identify and recognize patterns that distinguish the output classes the most.
 
 Autoencoders are used to learn efficient data codings and can be applied for dimensionality reduction or augmentation. Autoencoders allow for the reduction of noise in a signal or to perform resolution increase on an image. GANs can be used to perform sound and video synthesization from images or text by using two neural networks in parallel - a discriminator and a generative network. First, the generative network creates a synthesized output from the given input given. Then the discriminator network tries to classify the input as real or synthesized, providing the classification to the generative network. With this data loop, the generative network updates their weights to fit best what is described as real data.

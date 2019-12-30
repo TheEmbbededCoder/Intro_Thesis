@@ -59,13 +59,15 @@ In the development of the work of this dissertation, a Radeon Vega Frontier Edit
             GPU Memory Size               & 16 GB                                                      \\
             Thermal Design Power          & 300 W                                                      \\ \hline
         \end{tabular}
-    \caption{Characteristics of the used GPU device}
+    \caption{Characteristics of the used GPU device.}
     \label{tab:gpusepcs}
 \end{table}
 
 \subsection{Radeon Open Compute platform}
 
-The Radeon Open Compute (ROC) \cite{noauthor_radeonopencompute/rocm_2019} platform provides support for a set of frameworks and tools to allow developers to program and control AMD GPUs. Figure \ref{fig:rocmplatform} shows the high-level organization of the platform. It includes a set of tools that allows developers to access ROC Kernel Driver data. In the following subsections, two of those tools, the ROCM-SMI \cite{noauthor_radeonopencompute/roc-smi_2019} and ROC-Profiler \cite{noauthor_rocm-developer-tools/rocprofiler_2019}, used on the development of this work, are described.
+The Radeon Open Compute (ROC) \cite{noauthor_radeonopencompute/rocm_2019} platform provides support for a set of frameworks and tools to allow developers to program and control AMD GPUs. Figure \ref{fig:rocmplatform} shows the high-level organization of the platform. In the lowest level, the platform includes the ROCk (Radeon Open Compute kernel) Kernel Driver,  responsible for establishing the low-level communication and control of the GPU device. On top of ROCk, the trunk interface and, the previously described, HSA runtime are built. The upper layers are made up of software libraries that implement explicit communication between the CPU and GPU and sets of optimized kernels to accelerate specific workflows (such as deep learning primitives).
+
+ROCm also includes a set of tools that allow developers to access  ROCk Kernel Driver in order to control some GPU parameters. In the following subsections, two of those tools, the ROCM-SMI \cite{noauthor_radeonopencompute/roc-smi_2019} and ROC-Profiler \cite{noauthor_rocm-developer-tools/rocprofiler_2019}, used on the development of this work, are described.
 
 \begin{figure}[!htb]
   \centering
@@ -75,12 +77,12 @@ The Radeon Open Compute (ROC) \cite{noauthor_radeonopencompute/rocm_2019} platfo
 \end{figure}
 
 \subsubsection{ROCM-SMI}
-The ROCm System Management Interface (ROC-SMI) \cite{noauthor_radeonopencompute/roc-smi_2019} is a user-friendly command-line application for manipulating the Radeon Open Compute Kernel (ROCK). By using it, it becomes possible to know and control the state of the GPU devices that are present in the system. The application uses sysfs files to query and manipulate the device kernel using the libsensors library \cite{noauthor_libsensors3:_nodate}.
+The ROCm System Management Interface (ROC-SMI) \cite{noauthor_radeonopencompute/roc-smi_2019} is a user-friendly command-line application for manipulating the Radeon Open Compute Kernel (ROCk). By using it, it becomes possible to know and control the state of the GPU devices that are present in the system. 
 
 From the set of query and control directives that is made available by ROC-SMI, the following are of particular interest for the topic of this dissertation:
 
 \begin{itemize}
-\item \textbf{GPU utilization:} Retrieves the current utilization rates corresponding the device's major subsystems, one value for the processing core and other for the main device memory. The rate is computed over a specific time interval set on the libsensors library. The processing core utilization reflects the percentage of time that the GPU core is being used to perform computations. In contrast, the main device memory utilization reflects the percentage of time on which the memory was being read or written.
+\item \textbf{GPU utilization:} Retrieves the current utilization rates corresponding the device's major subsystems, one value for the processing core and other for the main device memory. The rate is computed over a specific time interval set on the device driver's. The processing core utilization reflects the percentage of time that the GPU core is being used to perform computations. In contrast, the main device memory utilization reflects the percentage of time on which the memory was being read or written.
 
 \item \textbf{GPU power}: Retrieves the average power used by the device. Similarly to the utilization rate, the average power is computed over a defined time interval, during which a number of power samples are taken.
 
@@ -98,7 +100,7 @@ ROC-SMI also provides a mechanism to control and change some of the device param
 
 Additionally, the interface also allows the user to manually set the fan speed, required to guarantee the same temperature level for all executed tests.
 
-This versatility and ability to independently control the clock rate and voltage level of the device, supported by ROCM-SMI and the libsensors library was the defining factor for choosing an AMD GPU over the more popular options of NVIDIA. As it was referred before, an exploration of the voltage level shall be undertaken to achieve this thesis objectives, and only the AMD platform allows for independent control over this variable.
+This versatility and ability to independently control the clock rate and voltage level of the device, supported by ROCM-SMI was the defining factor for choosing an AMD GPU over the more popular options of NVIDIA. As it was referred before, an exploration of the voltage level shall be undertaken to achieve this thesis objectives, and only the AMD platform allows for independent control over this variable.
 
 \subsubsection{ROC-Profiler}
 
@@ -132,7 +134,9 @@ On the other hand, the static part of the power consumption comprehends three co
 
 Usually, the dynamic power dominates the total power consumption of a circuit. However, with the current reduction of the transistors manufacturing size, the static power is becoming a significant part \cite{s._hong_modeling_2012} \cite{hong_integrated_2010}. Nevertheless, as a common reference and due to the usually higher weight of the dynamic power on the total power consumption, the power used by a circuit usually changes linearly with the clock frequency and quadratically with the supplied voltage.
 
-Moreover, by intelligently controlling the clock frequency, the required voltage level for stable operation of the circuit can also be reduced, leading to further power savings. However, the reduction of the operating frequency harms the pic performance of the circuit, so a careful scaling of voltage/frequency needs to be done in run-time. The "on the fly" control of these parameters is called Dynamic Voltage and Frequency Scaling (DVFS). This power management technique allows for an energy efficiency improvement by matching the GPU utilization to the voltage and frequency levels that should be appliyed to it.
+Moreover, the rate at which the transistors are able to switch state is dependent on the applied voltage level. So, to safely increase the clock frequency, it is also necessary to increase the voltage level to guarantee the correct fulfilment of the reduced timing constraints. In general, the applied voltage level $V$ is a function of the current operating frequency $f$, in the form of $V(f)$. Therefore, by intelligently controlling the clock frequency, the required voltage level for stable operation of the circuit can also be reduced, leading to further power savings. However, the reduction of the operating frequency harms the pic performance of the circuit, so a careful scaling of voltage/frequency needs to be done in run-time. 
+
+The "on the fly" control of frequency and voltage is called Dynamic Voltage and Frequency Scaling (DVFS). This power management technique allows for an energy efficiency improvement by matching the GPU utilization to the voltage and frequency levels that should be applied to it.
 
 In general, modern GPU boards have independent control over two pairs of frequency and voltage. Each pair (or domain) acts on a distinct part of the GPU, intending to maximize the performance or reduce the power consumption. The first domain concerns the GPU core, acting on all CUs, the cache, and the interconnection fabric. The second affects the DRAM chips that compose the video memory. 
 
@@ -182,7 +186,7 @@ A \textit{governer} is a set of parameters (such as frequency and voltage tables
 
 \begin{figure}[!htb]
   \centering
-  \includegraphics[width=1\textwidth]{Figures/StateArt/DVFSprogram.png}
+  \includegraphics[width=\textwidth]{Figures/StateArt/DVFSprogram.png}
   \caption[Controller]{Interval-based DVFS procedure.}
   \label{fig:DVFSprocedure}
 \end{figure}
@@ -220,7 +224,7 @@ The following subsections present a brief overview of some of these works.
 
 \subsubsection{Experimental Approaches}
 
-Jiao \textit{et al.} \cite{jiao_power_2010} scaled the GPU core and memory frequency of an NVIDIA Tesla GTX 280 using three types of workload: a compute-bounded dense matrix multiplication application; a memory bounded application that performs dense matrix transpose; and a mixed workload, Fast Fourier Transform (FFT) computation. The experimental study showed that for the same core-memory frequency settings, the three applications showed different performance and energy efficiency curves. While a compute bounded application showed to be insensitive to memory scaling, the mixed workload FFT takes advantage of high memory frequency and low core frequency. At last, the memory bounded application profits from both high core and memory frequency. In general, it was shown that energy efficiency could be determined by the instructions per cycle (IPC) metric and by the global ratio of memory transactions by computation transactions.
+Jiao \textit{et al.} \cite{jiao_power_2010} scaled the GPU core and memory frequency of an NVIDIA Tesla GTX 280 using three types of workload: a compute-bounded dense matrix multiplication application; a memory bounded application that performs dense matrix transpose; and a mixed workload, Fast Fourier Transform (FFT) computation. The experimental study showed that for the same core-memory frequency settings, the three applications showed different performance and energy efficiency curves. While a compute bounded application showed to be insensitive to memory scaling, the memory bounded application takes advantage of high memory frequency and low core frequency. At last, the mixed workload FFT application profits from both high core and memory frequency. In general, it was shown that energy efficiency could be determined by the instructions per cycle (IPC) metric and by the global ratio of memory transactions by computation transactions.
 
 Ge \textit{et al.} \cite{ge_effects_2013} explored dense matrix multiplication kernel executions in more detail using an NVIDIA Kepler K20c GPU.  The work revealed that for this type of kernel (compute-bounded), the power used by the GPU and the achievable performance is linear to the GPU core frequency and that the total energy consumption had no relation to frequency scaling. In all the used application tests, the energy efficiency has a linear relation with the GPU frequency, with the highest energy efficiency achieved when the highest clock frequency was employed.
 
@@ -250,7 +254,7 @@ Akiki \textit{et al.} \cite{akiki_energy-aware_2018} proposes a run-time gradien
 
 Huang \textit{et al.} \cite{huang_gpu_2019} introduced an novel proportional-integral-derivative neural network (PIDNN) frequency controller. This controller uses gradient descent to find the most appropriate frequency to be applied to the GPU core, memory and interconnect network in order to reduce energy consumption. The designed neural network has as input the current frequency of each GPU component, the number of kernels to be dispatched, the interconnect message queue size and the number of caches misses. The hidden layers of the neural network represent the proportional-integral-derivative controllers and the output layer corresponds to the new frequency to be set on the core, memory and interconnect. After the model is trained (and depending on the GPU model), the novel DVFS controller can reduce energy consumption between 4.39\% and 18.67\% on the tested benchmarks.
 
-In the work of Cha \textit{et al.} \cite{cha_core-level_2018} presented earlier, it is discussed how does the application of DVFS at the CU level improve the performance and the energy consumption of the GPU. Using the GPGPUSim GPU simulator, they created a multiclock generator able to provide a fast, base and slow clock to each of the CU at demand.  By reserving a register on each CU, that the compiler will write with the information regarding what is the most appropriate clock frequency, each CU will inform the multiclock generator which of the three clocks should be active. By enabling this finer-grained DVFS, it made it possible for the acceleration of computed-bounded kernels while still providing the most energy efficient frequency to those how are memory-bounded.
+In the work of Cha \textit{et al.} \cite{cha_core-level_2018} presented earlier, it is discussed how does the application of DVFS at the CU level improve the performance and the energy consumption of the GPU. Using the GPGPUSim GPU simulator, they created a multiclock generator able to provide a fast, base and slow clock to each of the CU at demand.  By reserving a register on each CU, that the compiler will write with the information regarding what is the most appropriate clock frequency, each CU will inform the multiclock generator which of the three clocks should be active. This approach showed the benefits of creating further specialized clock zones, that enables a finer grain of control over frequency and voltage. In the experimental work conducted by Cha, the finer-grained DVFS system was able to accelerate the compute-bounded kernels while still providing the more energy efficiency frequency for the memory-bounded ones.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Models}
@@ -322,7 +326,7 @@ To beneficially use voltage scaling outside conventional DVFS limits, it is nece
 
 The voltage margin's primary purpose is to guarantee the correct operation of the GPU against the technology process tolerances, voltage (noise) and temperature (PVT) variation and device aging.
 The process variation results from imperfections in the lithography and dopants diffusion. This phenomenon can occur either intra-die, when devices from the same die present different features depending on its locations, and inter-die, meaning that devices from one die can present different features from devices from another batch of dies. The process variation affects the speed of transistors and the overall circuit characteristics, by varying the device threshold and speed. In order to guarantee the correct execution of the device at the intended frequency, is necessary to boost the voltage applied to all transistors \cite{thomas_core_2016}.
-Leng tested the influence of process variation by running the set of benchmarks on multiple GPUs of the same model, achieving a maximum variability of 0.07V for the same benchmarks. To test the effect of temperature, all the benchmarks were run at 40ºC and 70ºC core temperature. Measuring the $V_{min}$ in both conditions led to 0.02V variation between the runs. The  $V_{min}$ variation for process and temperature has a relatively uniform impact across all programs and it is not sufficiently large to be the leading root determining the guardband size. 
+Leng tested the influence of process variation by running the set of benchmarks on multiple GPUs of the same model, achieving a maximum variability of 0.07V for the same benchmarks. To test the effect of temperature, all the benchmarks were run at 40ºC and 70ºC core temperature. Measuring the $V_{min}$ in both conditions led to 0.02V variation between the runs. The measured differences for process and temperature variation have a relatively low and uniform impact across all tested programs. This result seems to indicate that these two factors do not have a sufficiently high impact to be the leading root cause determining the $V_{min}$ and guardband size.
 
 The variability of aging was not possible to measure directly. However, it is plausible to assume that this effect should produce a similar contribution to process and temperature variation \cite{leng_safe_2015}.
 
@@ -339,7 +343,7 @@ Works, such as of Leng \textit{et al.} \cite{leng_safe_2015} and Nakhaeea  \text
 
 In general, a good model of the minimum operating voltage should be able to not only correctly predict  $V_{min}$ across a significant large set of applications, but also minimize the under and overprediction of this value. Overpredicting $V_{min}$ will most likely lead to the occurrence of program faults, while underpredicting the voltage results is not using the full benefit of this finding at their most.
 
-The study of Tan \textit{et al.} \cite{tan_combating_2016} explored the effects of using low supply voltage on the GPU register file. They support this research by demonstrating that this specific component is one of the most affected and one of the first provoking program faults when not enough voltage is provided. Under this premise, Tan modeled how different voltage levels are impacted by the process variation of the register file, and presented an architectural solution that takes advantage of register dead time for reliable operations from unreliable register files at low voltage. 
+The study of Tan \textit{et al.} \cite{tan_combating_2016} explored the effects of using low supply voltage on the GPU register file. They support this research by demonstrating that this specific component is one of the most affected and one of the first provoking program faults when not enough voltage is provided. Under this premise, Tan tested the minimum required voltage that guarantees that a write and a subsequent read of a register produces the same result. Due to process variation, this value can significantly differ from register to register. With this information, the author created an architectural solution that is able to analyze, for the runtime voltage level, which registers can be used and, by taking advantage of \textit{dead-registers} (registers that contain useless data) the solution can forward the data from a faulty register to a working one.
 
 To take advantage of non-conventional voltage scaling, the problem needs to be tackled on the two presented forms. By both analyzing the minimum required voltage and the size of the guardband, and by studying architecture improvements that can improve the reliability of GPU components at low supply voltage. Furthermore, when imprecision tolerant applications are executed, it becomes possible to run GPUs at $V_{min}$ with extra confidence that the small errors induced by low supply voltage will not cause errors on the application's output. This type of application allows the use of techniques such as timing error propagation (TEP) \cite{nakhaee_lifetime_2018}, where computation errors can be propagated to subsequent logic stages with the expectation that the algorithm itself is able to recover from it.
 
