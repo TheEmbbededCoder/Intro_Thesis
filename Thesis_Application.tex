@@ -21,11 +21,11 @@ Deep Learning (DL) is a subset of the larger family of Machine Learning methods.
 
 Biological systems inspired the creation of Artificial Neural Networks (ANN), in which Deep Learning architectures are built on top. This information-processing and distributed communications type of network operates by mimicking a simplistic biological brain, where the interconnection between the neurons is static and symbolic \cite{marblestone_toward_2016}. 
 
-Different deep learning architectures are being developed, such as convolutional neural networks (CNN), recurrent neural networks (RNN), and unsupervised pre-trained networks (UPT). These have been applied to a diversity of fields, including computer vision, speech and audio recognition, natural language processing, bioinformatics, and others. In such applications, deep learning algorithms are being able to achieve comparable and, in some cases, superior results to humans experts \cite{noauthor_googles_nodate}.
+Different deep learning architectures are being developed, such as convolutional neural networks (CNN), recurrent neural networks (RNN), and unsupervised pre-trained networks (UPT) - see Figure~\ref{fig:DNNarch}. These have been applied to a diversity of fields, including computer vision, speech and audio recognition, natural language processing, bioinformatics, and others. In such applications, deep learning algorithms are being able to achieve comparable and, in some cases, superior results to humans experts \cite{noauthor_googles_nodate}.
 
 \begin{figure}[!htb]
   \centering
-  \includegraphics[width=0.75\textwidth]{Figures/DL/DNNarch.png}
+  \includegraphics[width=0.6\textwidth]{Figures/DL/DNNarch.png}
   \caption[]{Model of fully-connected (feedforward) network.}
   \label{fig:DNNarch}
 \end{figure}
@@ -176,7 +176,7 @@ Listing 3.3 studies the influence of branches on the code, that will affect the 
 
 To test the L2 cache, the benchmark in Listing 3.5 performs memory transfers between large arrays (sufficiently large to not fit on the lower cache level). Listing 3.6 stresses the DRAM with a benchmark with a similar structure to Listing 3.1. This benchmark uses a lower number of arithmetic instructions per loop iteration and a smaller value of \textit{N} in order for the threads to spend less time inside of CUs, resulting in higher utilization of the DRAM.
 
-A second level of benchmarks is also devised by performing linear combinations of the different benchmarks proposed. This will allow for the characterization of the cross-influence of the different GPU components together.
+A second level of benchmarks is also devised by performing linear combinations of the different benchmarks proposed. This will allow for the characterization of the cross-influence of the different GPU components together and the impact of forwarding through the architecture can have on the critical path.
 
 
 
@@ -287,7 +287,7 @@ The training session consists of performing 20 epochs, meaning that the backprop
 \textbf{Performance Level} & \textbf{Time {[}s{]}} & \textbf{Average Power {[}W{]}} & \textbf{Maximum Power {[}W{]}} & \textbf{Total Energy {[}J{]}} \\ \hline
 0                          & 268                   & 13.27                          & 35                             & 3802.877                      \\
 1                          & 268                   & 16.41                          & 35                             & 4765.125                      \\
-2                          & 267                   & 19                             & 35                             & 5420.913                      \\
+2                          & 267                   & 19,00                             & 35                             & 5420.913                      \\
 3                          & 266                   & 20.99                          & 47                             & 6728.036                      \\
 4                          & 263                   & 23.52                          & 64                             & 6725.252                      \\
 5                          & 263                    & 25.79                          & 56                             & 6489.767                      \\

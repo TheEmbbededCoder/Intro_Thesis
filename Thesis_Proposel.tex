@@ -45,7 +45,7 @@ The second part of the analysis is to create the optimization curves for each be
 \subsection{DNN Primitives Analysis}
 The obtained insights of the fundamental analysis will help to guide the DNN primitive analysis and characterization. Here, the benchmarks proposed in Section \ref{sec:dnnPri} will be used to understand how to optimize the different layers of a complete DNN. 
 
-On the preliminary work that was already evaluated (see Section 3.3), the $V_{min}$ was determined for a CNN. However, these results only indicate that there is a specific layer on that CNN that has the determined  $V_{min}$. The characterization of DVFS parameters in a per layer way shall allow for further optimizations of the DVFS to the running neural network.
+On the preliminary work that was already evaluated (see Section 3.3), the $V_{min}$ was determined for a CNN. However, these results only indicate that there is a specific layer on that CNN that has the determined  $V_{min}$. The characterization of the DVFS parameters in a per layer way shall allow for further optimizations of the DVFS to the running neural network.
 
 \section{Power and Performance Model}
 The second step to create the aimed DVFS aware mechanism is to have a valid prediction model for power and performance. This mechanism will use the performance counters extracted from the runtime of the benchmarks from Section \ref{sec:funAnal} and \ref{sec:dnnPri}, the references for the type of application and the user input concerning the desired optimization (performance, energy efficiency or energy saving) to predict $V_{min}$ and the best pair of frequency/voltage. Figure \ref{fig:model} exemplifies the block diagram of the power and performance model.
